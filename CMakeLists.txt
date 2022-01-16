@@ -11,5 +11,9 @@ if (PRODUCTION)
   add_compile_definitions(DOCTEST_CONFIG_DISABLE=1)
 endif()
 
+add_subdirectory(external/fmt)
+
 add_executable(mu ${SOURCE_FILES})
+
+target_link_libraries(mu PRIVATE fmt)
 
