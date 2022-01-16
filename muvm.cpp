@@ -1,10 +1,14 @@
 #include <cassert>
 #include <span>
 #include <stack>
+#include <stdexcept>
 #include <vector>
 
 #include "external/doctest/doctest.h"
+#include <fmt/core.h>
 
+using fmt::format;
+using std::logic_error;
 using std::span;
 using std::stack;
 using std::vector;
@@ -77,7 +81,7 @@ void Process(span<Instruction> instructions) {
     else if (ins.opCode == OpCode::Subtract)
       Subtract();
     else
-      assert(0 && "Unexpected OpCode");
+      throw logic_error(format("Unexpected opcode: {}", (int)ins.opCode));
   }
 }
 
