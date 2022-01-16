@@ -28,7 +28,7 @@ int Pop() {
   return value;
 }
 
-int Count() { return valueStack.size(); }
+int StackSize() { return valueStack.size(); }
 
 TEST_CASE("Verify value stack behavior") {
   Push(42);
@@ -39,7 +39,7 @@ TEST_CASE("Verify value stack behavior") {
 }
 
 void Add() {
-  assert(Count() >= 2);
+  assert(StackSize() >= 2);
   int left = Pop();
   int right = Pop();
   Push(left + right);
@@ -53,7 +53,7 @@ TEST_CASE("Verify add opcode behavior") {
 }
 
 void Subtract() {
-  assert(Count() >= 2);
+  assert(StackSize() >= 2);
   int right = Pop();
   int left = Pop();
   Push(left - right);
