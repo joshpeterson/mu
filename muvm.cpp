@@ -2,7 +2,6 @@
 #include <span>
 #include <stack>
 #include <stdexcept>
-#include <vector>
 
 #include "external/doctest/doctest.h"
 #include <fmt/core.h>
@@ -11,7 +10,6 @@ using fmt::format;
 using std::logic_error;
 using std::span;
 using std::stack;
-using std::vector;
 
 namespace mu {
 
@@ -87,7 +85,7 @@ void Process(span<Instruction> instructions) {
 
 TEST_CASE("Verify instruction processing behavior") {
   SUBCASE("Push two values and add") {
-    vector<Instruction> instructions = {
+    Instruction instructions[] = {
         {OpCode::Push, 2}, {OpCode::Push, 3}, {OpCode::Add}};
     Process(instructions);
     CHECK(Pop() == 5);
@@ -95,11 +93,11 @@ TEST_CASE("Verify instruction processing behavior") {
 
   SUBCASE("Push three values, pop one and subtract") {
     // This should do 2 - 3
-    vector<Instruction> instructions = {{OpCode::Push, 2},
-                                        {OpCode::Push, 3},
-                                        {OpCode::Push, 8},
-                                        {OpCode::Pop},
-                                        {OpCode::Subtract}};
+    Instruction instructions[] = {{OpCode::Push, 2},
+                                  {OpCode::Push, 3},
+                                  {OpCode::Push, 8},
+                                  {OpCode::Pop},
+                                  {OpCode::Subtract}};
     Process(instructions);
     CHECK(Pop() == -1);
   }
