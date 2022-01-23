@@ -3,7 +3,7 @@
 #include <stack>
 #include <stdexcept>
 
-#include "external/doctest/doctest.h"
+#include <doctest.h>
 #include <fmt/core.h>
 
 using fmt::format;

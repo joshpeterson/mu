@@ -12,8 +12,9 @@ if (PRODUCTION)
 endif()
 
 add_subdirectory(external/fmt)
+add_subdirectory(external/doctest)
 
 add_executable(mu ${SOURCE_FILES})
 
-target_link_libraries(mu PRIVATE fmt)
+target_link_libraries(mu PRIVATE fmt doctest)
 
