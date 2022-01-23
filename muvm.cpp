@@ -11,14 +11,44 @@ using std::logic_error;
 using std::span;
 using std::stack;
 
-namespace mu {
+// === μ Virtual Machine ===
+//
+// The μ VM is a stack based virtual machine. It has the following parts:
+//
+// * A set of instructions that define its operations
+// * A value stack to store the values those instructions operate on
+// * An interpreter that executes each instruction as a C++ function
+// * A processing loop that dispatches each instruction to the interpreter
+//
+// Tests for each part of the VM are written immediately after the thing they
+// test.
 
-enum class OpCode { Push, Pop, Add, Subtract };
+// == Instructions ==
+//
+// Each instruction has a unique opcode and an argument. The opcode identifes
+// which instruction should be executed. The argument is optional (some
+// instructions don't need an argument) and it ignored is not required.
+
+enum class OpCode {
+  // The push and pop opcodes are special - they implement value stack behavior.
+  Push,
+  Pop,
+
+  // These opcodes represent the actual instructions the VM can execute.
+  Add,
+  Subtract
+};
 
 struct Instruction {
   OpCode opCode;
   int argument;
 };
+
+// == Value stack ==
+//
+// Each instruction operates on the value stack, poping values from the stack as
+// it needs them and pushing results on to the stack. The value stack is free to
+// grow and shrink as necessary to execute the instructions.
 
 stack<int> valueStack;
 
@@ -39,6 +69,12 @@ TEST_CASE("Verify value stack behavior") {
   Push(43);
   CHECK(Pop() == 43);
 }
+
+// == Interpreter ==
+//
+// The intrepreter provides an implementation for each instruction the VM can
+// execute. Each instruction implementation is responsible to operating on the
+// value stack properly.
 
 void Add() {
   assert(StackSize() >= 2);
@@ -67,6 +103,11 @@ TEST_CASE("Verify subtract opcode behavior") {
   Subtract();
   CHECK(Pop() == -1);
 }
+
+// == Instruction processor ==
+//
+// The instruction processor identifies each instruction and calls the proper
+// implemenatation for that instruction.
 
 void Process(span<Instruction> instructions) {
   for (auto& ins : instructions) {
@@ -102,6 +143,4 @@ TEST_CASE("Verify instruction processing behavior") {
     CHECK(Pop() == -1);
   }
 }
-
-} // namespace mu
 
