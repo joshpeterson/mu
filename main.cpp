@@ -1,6 +1,10 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "external/doctest/doctest.h"
 
+#include <fmt/core.h>
+
+using fmt::print;
+
 int main(int argc, char** argv) {
   doctest::Context context;
 
@@ -15,7 +19,7 @@ int main(int argc, char** argv) {
   if (context.shouldExit())
     return res;
 
-  printf("Here\n");
+  print("The \u03BC VM only runs via unit tests now!.\n");
 
-  return 0;
+  return 1;
 }
