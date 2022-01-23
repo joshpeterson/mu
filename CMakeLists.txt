@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.13)
+
 project(mu)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(SOURCE_FILES main.cpp muvm.cpp)
+set(SOURCE_FILES
+  main.cpp
+  mu/Interpreter.cpp
+  mu/InstructionProcessor.cpp
+  mu/ValueStack.cpp)
 
 option(PRODUCTION "Remove test code" OFF)
 if (PRODUCTION)
