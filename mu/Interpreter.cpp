@@ -13,8 +13,8 @@
 
 void Add() {
   assert(StackSize() >= 2);
-  int left = Pop();
-  int right = Pop();
+  i64 left = Pop();
+  i64 right = Pop();
   Push(left + right);
 }
 
@@ -27,8 +27,8 @@ TEST_CASE("Verify add opcode behavior") {
 
 void Subtract() {
   assert(StackSize() >= 2);
-  int right = Pop();
-  int left = Pop();
+  i64 right = Pop();
+  i64 left = Pop();
   Push(left - right);
 }
 

@@ -15,11 +15,11 @@ using std::stack;
 // It is an implementation detail that we don't want to leak to any other code.
 // Other code should only use the "Value Stack" based its public API (i.e. its
 // methods).
-static stack<int> valueStack;
+static stack<i64> valueStack;
 
-void Push(int value) { valueStack.push(value); }
+void Push(i64 value) { valueStack.push(value); }
 
-int Pop() {
+i64 Pop() {
   auto value = valueStack.top();
   valueStack.pop();
   return value;

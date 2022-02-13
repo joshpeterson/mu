@@ -1,5 +1,7 @@
 #pragma once
 
-void Push(int value);
-int Pop();
+#include "Bytecode.hpp"
+
+void Push(i64 value);
+i64 Pop();
 int StackSize();
