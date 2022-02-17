@@ -1,4 +1,4 @@
 #pragma once
 
-void Add();
-void Subtract();
+auto Add() -> void;
+auto Subtract() -> void;

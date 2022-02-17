@@ -11,7 +11,7 @@
 // execute. Each instruction implementation is responsible to operating on the
 // value stack properly.
 
-void Add() {
+auto Add() -> void {
   assert(StackSize() >= 2);
   i64 left = Pop();
   i64 right = Pop();
@@ -25,7 +25,7 @@ TEST_CASE("Verify add opcode behavior") {
   CHECK(Pop() == 85);
 }
 
-void Subtract() {
+auto Subtract() -> void {
   assert(StackSize() >= 2);
   i64 right = Pop();
   i64 left = Pop();

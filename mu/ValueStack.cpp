@@ -17,15 +17,15 @@ using std::stack;
 // methods).
 static stack<i64> valueStack;
 
-void Push(i64 value) { valueStack.push(value); }
+auto Push(i64 value) -> void { valueStack.push(value); }
 
-i64 Pop() {
+auto Pop() -> i64 {
   auto value = valueStack.top();
   valueStack.pop();
   return value;
 }
 
-int StackSize() { return valueStack.size(); }
+auto StackSize() -> int { return valueStack.size(); }
 
 TEST_CASE("Verify value stack behavior") {
   Push(42);

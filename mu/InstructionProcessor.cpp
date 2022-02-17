@@ -16,7 +16,7 @@ using fmt::format;
 // The instruction processor identifies each instruction and calls the proper
 // implemenatation for that instruction.
 
-void Process(span<Instruction> instructions) {
+auto Process(span<Instruction> instructions) -> void {
   for (auto& ins : instructions) {
     if (ins.opCode == OpCode::Push)
       Push(ins.argument);
