@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
   if (context.shouldExit())
     return res;
 
-  print("The \u03BC VM only runs via unit tests now!.\n");
+  print("The \u03BC VM only runs via unit tests now!\n");
 
   return 1;
 }
