@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SOURCE_FILES
   main.cpp
+  mu/Loader.cpp
   mu/Interpreter.cpp
   mu/InstructionProcessor.cpp
   mu/ValueStack.cpp)
