@@ -15,10 +15,10 @@ TestMuFile::TestMuFile(const char* testFilePath, span<Instruction> instructions)
 TestMuFile::~TestMuFile() { std::remove(m_testFilePath); }
 
 void VerifyInstructions(span<Instruction> expected, span<Instruction> actual) {
-  CHECK(expected.size() == actual.size());
+  REQUIRE(expected.size() == actual.size());
 
   for (auto i = 0; i < expected.size(); i++) {
-    CHECK(expected[i] == actual[i]);
+    REQUIRE(expected[i] == actual[i]);
   }
 }
 

@@ -10,6 +10,7 @@ set(SOURCE_FILES
   mu/Loader.cpp
   mu/Interpreter.cpp
   mu/InstructionProcessor.cpp
+  mu/ReadOnlyMemoryMappedFile.cpp
   mu/ValueStack.cpp
   mu/TestUtilities.cpp)
 
