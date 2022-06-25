@@ -28,3 +28,7 @@ struct Instruction {
   i64 argument;
 };
 
+inline bool operator==(Instruction left, Instruction right) {
+  return left.opCode == right.opCode && left.argument == right.argument;
+}
+

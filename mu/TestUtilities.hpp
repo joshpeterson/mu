@@ -16,4 +16,6 @@ private:
   const char* m_testFilePath;
 };
 
+void VerifyInstructions(span<Instruction> expected, span<Instruction> actual);
+
 #endif // MU_TESTING_ENABLED

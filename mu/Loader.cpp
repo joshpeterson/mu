@@ -32,15 +32,7 @@ TEST_CASE("Verify loader behavior") {
 
     auto actualInstructions = Load("test.mu");
 
-    CHECK(actualInstructions.size() == 3);
-
-    CHECK(actualInstructions[0].opCode == OpCode::Push);
-    CHECK(actualInstructions[0].argument == 2);
-
-    CHECK(actualInstructions[1].opCode == OpCode::Push);
-    CHECK(actualInstructions[1].argument == 3);
-
-    CHECK(actualInstructions[2].opCode == OpCode::Add);
+    VerifyInstructions(expectedInstructions, actualInstructions);
   }
 }
 
