@@ -1,8 +1,5 @@
+#include "TestUtilities.hpp"
 #include <doctest.h>
-
-#if !DOCTEST_CONFIG_DISABLE
-#include <cstdio>
-#endif
 
 #include <cstddef>
 using std::byte;
@@ -26,20 +23,6 @@ auto Load(const char* muFilePath) -> span<Instruction> {
   size_t numberOfInstructions = fileSize / sizeof(Instruction);
   return span<Instruction>{instructions, numberOfInstructions};
 }
-
-class TestMuFile {
-public:
-  TestMuFile(const char* testFilePath, span<Instruction> instructions) {
-    auto testFileHandle = fopen(testFilePath, "wb");
-    fwrite(instructions.data(), 1, instructions.size_bytes(), testFileHandle);
-    fclose(testFileHandle);
-  }
-
-  ~TestMuFile() { std::remove(m_testFilePath); }
-
-private:
-  const char* m_testFilePath;
-};
 
 TEST_CASE("Verify loader behavior") {
   SUBCASE("Returns instruction from file") {

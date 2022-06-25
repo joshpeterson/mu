@@ -10,11 +10,14 @@ set(SOURCE_FILES
   mu/Loader.cpp
   mu/Interpreter.cpp
   mu/InstructionProcessor.cpp
-  mu/ValueStack.cpp)
+  mu/ValueStack.cpp
+  mu/TestUtilities.cpp)
 
 option(PRODUCTION "Remove test code" OFF)
 if (PRODUCTION)
   add_compile_definitions(DOCTEST_CONFIG_DISABLE=1)
+else()
+  add_compile_definitions(MU_TESTING_ENABLED=1)
 endif()
 
 add_subdirectory(external/fmt)
