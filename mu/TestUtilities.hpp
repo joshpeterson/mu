@@ -1,7 +1,5 @@
 #pragma once
 
-#if MU_TESTING_ENABLED
-
 #include <doctest.h>
 
 #include <cstddef>
@@ -36,5 +34,3 @@ private:
 void VerifyInstructions(span<Instruction> expected, span<Instruction> actual);
 
 doctest::String toString(const Instruction& value);
-
-#endif // MU_TESTING_ENABLED

@@ -14,13 +14,7 @@ set(SOURCE_FILES
   mu/ValueStack.cpp
   mu/TestUtilities.cpp)
 
-option(PRODUCTION "Remove test code" OFF)
-if (PRODUCTION)
-  add_compile_definitions(DOCTEST_CONFIG_DISABLE=1)
-else()
-  add_compile_definitions(MU_TESTING_ENABLED=1)
-  add_compile_definitions(DOCTEST_CONFIG_TREAT_CHAR_STAR_AS_STRING)
-endif()
+add_compile_definitions(DOCTEST_CONFIG_TREAT_CHAR_STAR_AS_STRING)
 
 add_subdirectory(external/fmt)
 add_subdirectory(external/doctest)

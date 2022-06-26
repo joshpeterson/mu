@@ -1,4 +1,3 @@
-#if MU_TESTING_ENABLED
 #include <doctest.h>
 
 #include <cstdio>
@@ -52,5 +51,3 @@ doctest::String toString(const Instruction& instruction) {
                 instruction.argument)
       .c_str();
 }
-
-#endif // MU_TESTING_ENABLED
