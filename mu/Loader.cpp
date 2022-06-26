@@ -1,6 +1,9 @@
 #include "TestUtilities.hpp"
 #include <doctest.h>
 
+#include <fmt/core.h>
+using fmt::format;
+
 #include "Loader.hpp"
 
 // == Loader ==
@@ -9,13 +12,24 @@
 // and provides a list of instructions to be executed. It closes the file
 // when the instance of the Loadrer does out of scope.
 
-Loader::Loader(const char* muFilePath) : m_muFile(muFilePath) {
+Loader::Loader(const char* muFilePath)
+    : m_muFilePath(muFilePath), m_muFile(muFilePath),
+      m_errorCondition(ErrorCondition::NoError) {
+  auto instructionBuffer = (Instruction*)m_muFile.GetBuffer();
+  if (instructionBuffer == nullptr)
+    m_errorCondition = ErrorCondition::FileDoesNotExist;
+
   auto numberOfInstructions = m_muFile.GetSize() / sizeof(Instruction);
-  m_instructions = span<Instruction>{(Instruction*)m_muFile.GetBuffer(),
-                                     numberOfInstructions};
+  m_instructions = span<Instruction>{instructionBuffer, numberOfInstructions};
 }
 
 span<Instruction> Loader::GetInstructions() const { return m_instructions; }
+
+string Loader::GetErrorMessage() const {
+  if (m_errorCondition == ErrorCondition::FileDoesNotExist)
+    return format("The file '{}' does not exist.", m_muFilePath);
+  return "";
+}
 
 TEST_CASE("Verify loader behavior") {
   SUBCASE("Provides instructions from file") {
@@ -27,6 +41,28 @@ TEST_CASE("Verify loader behavior") {
     Loader muFile("test.mu");
 
     VerifyInstructions(expectedInstructions, muFile.GetInstructions());
+  }
+
+  SUBCASE("When file does not exist, provides no instructions ") {
+    Loader muFileThatDoesNotExist("nofile.mu");
+    REQUIRE(muFileThatDoesNotExist.GetInstructions().size() == 0);
+  }
+
+  SUBCASE("When file does not exist, provides useful error message ") {
+    Loader muFileThatDoesNotExist("nofile.mu");
+    REQUIRE(muFileThatDoesNotExist.GetErrorMessage() ==
+            "The file 'nofile.mu' does not exist.");
+  }
+
+  SUBCASE("When the file is loaded correctly, provide an empty error message") {
+    Instruction expectedInstructions[] = {
+        {OpCode::Push, 2}, {OpCode::Push, 3}, {OpCode::Add}};
+
+    TestMuFile testFile("test.mu", expectedInstructions);
+
+    Loader muFile("test.mu");
+
+    REQUIRE(muFile.GetErrorMessage() == "");
   }
 }
 
