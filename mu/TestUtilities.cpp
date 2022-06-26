@@ -5,14 +5,18 @@
 
 #include "TestUtilities.hpp"
 
-TestMuFile::TestMuFile(const char* testFilePath, span<Instruction> instructions)
+TestFile::TestFile(const char* testFilePath, byte* data, size_t numberofBytes)
     : m_testFilePath(testFilePath) {
   auto testFileHandle = fopen(m_testFilePath, "wb");
-  fwrite(instructions.data(), 1, instructions.size_bytes(), testFileHandle);
+  fwrite(data, 1, numberofBytes, testFileHandle);
   fclose(testFileHandle);
 }
 
-TestMuFile::~TestMuFile() { std::remove(m_testFilePath); }
+TestFile::~TestFile() { std::remove(m_testFilePath); }
+
+TestMuFile::TestMuFile(const char* testFilePath, span<Instruction> instructions)
+    : m_testFile(testFilePath, (byte*)instructions.data(),
+                 instructions.size_bytes()) {}
 
 void VerifyInstructions(span<Instruction> expected, span<Instruction> actual) {
   REQUIRE(expected.size() == actual.size());
