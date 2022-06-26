@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include <fmt/format.h>
+
 // == Bytecode ==
 //
 // The bytecode for μ is an array of instructions.
@@ -26,5 +28,31 @@ enum class OpCode {
 struct Instruction {
   OpCode opCode;
   i64 argument;
+};
+
+inline bool operator==(Instruction left, Instruction right) {
+  return left.opCode == right.opCode && left.argument == right.argument;
+}
+
+template <> struct fmt::formatter<OpCode> : formatter<string_view> {
+  // parse is inherited from formatter<string_view>.
+  template <typename FormatContext> auto format(OpCode c, FormatContext& ctx) {
+    string_view name = "unknown";
+    switch (c) {
+    case OpCode::Push:
+      name = "Push";
+      break;
+    case OpCode::Pop:
+      name = "Pop";
+      break;
+    case OpCode::Add:
+      name = "Add";
+      break;
+    case OpCode::Subtract:
+      name = "Subtract";
+      break;
+    }
+    return formatter<string_view>::format(name, ctx);
+  }
 };
 

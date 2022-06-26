@@ -7,14 +7,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SOURCE_FILES
   main.cpp
+  mu/Loader.cpp
   mu/Interpreter.cpp
   mu/InstructionProcessor.cpp
-  mu/ValueStack.cpp)
+  mu/ReadOnlyMemoryMappedFile.cpp
+  mu/ValueStack.cpp
+  mu/TestUtilities.cpp)
 
-option(PRODUCTION "Remove test code" OFF)
-if (PRODUCTION)
-  add_compile_definitions(DOCTEST_CONFIG_DISABLE=1)
-endif()
+add_compile_definitions(DOCTEST_CONFIG_TREAT_CHAR_STAR_AS_STRING)
 
 add_subdirectory(external/fmt)
 add_subdirectory(external/doctest)
