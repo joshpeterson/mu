@@ -15,11 +15,13 @@ public:
   span<Instruction> GetInstructions() const;
   string GetErrorMessage() const;
 
+  static const uint32_t MuMagicHeader = 0xDAFF;
+
 private:
   const char* m_muFilePath;
   ReadOnlyMemoryMappedFile m_muFile;
   span<Instruction> m_instructions;
 
-  enum class ErrorCondition { NoError, FileDoesNotExist };
+  enum class ErrorCondition { NoError, FileDoesNotExist, InvalidHeader };
   ErrorCondition m_errorCondition;
 };

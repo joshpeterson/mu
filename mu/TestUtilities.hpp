@@ -2,6 +2,8 @@
 
 #if MU_TESTING_ENABLED
 
+#include <doctest.h>
+
 #include <cstddef>
 using std::byte;
 #include <span>
@@ -11,7 +13,7 @@ using std::span;
 
 class TestFile {
 public:
-  TestFile(const char* testFilePath, byte* data, size_t numberofBytes);
+  TestFile(const char* testFilePath, byte* data, size_t numberOfBytes);
   ~TestFile();
 
 private:
@@ -21,11 +23,18 @@ private:
 class TestMuFile {
 public:
   TestMuFile(const char* testFilePath, span<Instruction> instructions);
+  ~TestMuFile();
 
 private:
   TestFile m_testFile;
+  byte* m_MuFileBuffer;
+
+  byte* GetMuFileData(span<Instruction> instructions);
+  size_t GetMuFileSize(span<Instruction> instructions);
 };
 
 void VerifyInstructions(span<Instruction> expected, span<Instruction> actual);
+
+doctest::String toString(const Instruction& value);
 
 #endif // MU_TESTING_ENABLED
