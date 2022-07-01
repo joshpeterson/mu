@@ -2,6 +2,6 @@
 
 #include "Bytecode.hpp"
 
-void Push(i64 value);
-i64 Pop();
+void Push(int64_t value);
+int64_t Pop();
 int StackSize();

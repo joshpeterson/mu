@@ -12,8 +12,6 @@
 // which instruction should be executed. The argument is optional (some
 // instructions don't need an argument) and it ignored is not required.
 
-typedef int64_t i64;
-
 enum class OpCode {
   // The push and pop opcodes are special - they implement value stack
   // behavior.
@@ -27,7 +25,7 @@ enum class OpCode {
 
 struct Instruction {
   OpCode opCode;
-  i64 argument;
+  int64_t argument;
 };
 
 inline bool operator==(Instruction left, Instruction right) {
@@ -55,4 +53,3 @@ template <> struct fmt::formatter<OpCode> : formatter<string_view> {
     return formatter<string_view>::format(name, ctx);
   }
 };
-
