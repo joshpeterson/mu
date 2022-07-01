@@ -16,4 +16,3 @@ private:
   byte* m_fileBuffer;
   size_t m_fileSize;
 };
-

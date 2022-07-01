@@ -85,4 +85,3 @@ TEST_CASE("Verify loader behavior") {
             "The file 'invalidMuFile.mu' is not a valid Mu file.");
   }
 }
-
