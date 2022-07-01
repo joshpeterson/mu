@@ -5,4 +5,4 @@ using std::span;
 
 #include "Bytecode.hpp"
 
-auto Process(span<Instruction> instructions) -> void;
+void Process(span<Instruction> instructions);
