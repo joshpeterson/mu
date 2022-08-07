@@ -21,7 +21,6 @@ Loader::Loader(const char* muFilePath)
   } else if (*(uint32_t*)fileData != MuMagicHeader) {
     m_errorCondition = ErrorCondition::InvalidHeader;
   } else {
-
     auto instructionBuffer = (Instruction*)(fileData + sizeof(MuMagicHeader));
     auto numberOfInstructions = m_muFile.GetSize() / sizeof(Instruction);
     m_instructions = span<Instruction>{instructionBuffer, numberOfInstructions};
