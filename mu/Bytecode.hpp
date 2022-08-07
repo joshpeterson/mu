@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <variant>
+using std::get;
+using std::variant;
 
 #include <fmt/format.h>
 
@@ -23,9 +26,11 @@ enum class OpCode {
   Subtract
 };
 
+using Argument = variant<int64_t>;
+
 struct Instruction {
   OpCode opCode;
-  int64_t argument;
+  Argument argument;
 };
 
 inline bool operator==(Instruction left, Instruction right) {

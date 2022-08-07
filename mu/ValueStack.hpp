@@ -2,6 +2,6 @@
 
 #include "Bytecode.hpp"
 
-void Push(int64_t value);
-int64_t Pop();
+void Push(Argument value);
+Argument Pop();
 int StackSize();

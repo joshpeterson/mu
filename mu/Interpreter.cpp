@@ -13,8 +13,8 @@
 
 void Add() {
   assert(StackSize() >= 2);
-  int64_t left = Pop();
-  int64_t right = Pop();
+  int64_t left = get<int64_t>(Pop());
+  int64_t right = get<int64_t>(Pop());
   Push(left + right);
 }
 
@@ -22,13 +22,13 @@ TEST_CASE("Verify add opcode behavior") {
   Push(42);
   Push(43);
   Add();
-  CHECK(Pop() == 85);
+  CHECK(get<int64_t>(Pop()) == 85);
 }
 
 void Subtract() {
   assert(StackSize() >= 2);
-  int64_t right = Pop();
-  int64_t left = Pop();
+  int64_t right = get<int64_t>(Pop());
+  int64_t left = get<int64_t>(Pop());
   Push(left - right);
 }
 
@@ -36,5 +36,5 @@ TEST_CASE("Verify subtract opcode behavior") {
   Push(42);
   Push(43);
   Subtract();
-  CHECK(Pop() == -1);
+  CHECK(get<int64_t>(Pop()) == -1);
 }

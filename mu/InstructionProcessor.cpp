@@ -36,7 +36,7 @@ TEST_CASE("Verify instruction processing behavior") {
     Instruction instructions[] = {
         {OpCode::Push, 2}, {OpCode::Push, 3}, {OpCode::Add}};
     Process(instructions);
-    CHECK(Pop() == 5);
+    CHECK(get<int64_t>(Pop()) == 5);
   }
 
   SUBCASE("Push three values, pop one and subtract") {
@@ -47,6 +47,6 @@ TEST_CASE("Verify instruction processing behavior") {
                                   {OpCode::Pop},
                                   {OpCode::Subtract}};
     Process(instructions);
-    CHECK(Pop() == -1);
+    CHECK(get<int64_t>(Pop()) == -1);
   }
 }
