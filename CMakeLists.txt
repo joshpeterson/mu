@@ -23,3 +23,5 @@ add_executable(mu ${SOURCE_FILES})
 
 target_link_libraries(mu PRIVATE fmt doctest)
 
+target_compile_options(mu PRIVATE -fsanitize=address)
+target_link_options(mu PRIVATE -fsanitize=address)
