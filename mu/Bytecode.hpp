@@ -1,11 +1,10 @@
 #pragma once
 
 #include <cstdint>
-#include <variant>
-using std::get;
-using std::variant;
 
 #include <fmt/format.h>
+
+#include "Argument.hpp"
 
 // == Bytecode ==
 //
@@ -25,8 +24,6 @@ enum class OpCode {
   Add,
   Subtract
 };
-
-using Argument = variant<int64_t>;
 
 struct Instruction {
   OpCode opCode;

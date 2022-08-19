@@ -29,8 +29,8 @@ int StackSize() { return valueStack.size(); }
 
 TEST_CASE("Verify value stack behavior") {
   Push(42);
-  CHECK(get<int64_t>(Pop()) == 42);
+  CHECK(Pop().i32() == 42);
 
   Push(43);
-  CHECK(get<int64_t>(Pop()) == 43);
+  CHECK(Pop().i32() == 43);
 }

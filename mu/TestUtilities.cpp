@@ -5,7 +5,6 @@
 
 #include <fmt/core.h>
 using fmt::format;
-#include <fmt/std.h>
 
 #include "TestUtilities.hpp"
 
