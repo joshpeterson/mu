@@ -72,9 +72,20 @@ TEST_CASE(
 
 void Subtract() {
   assert(StackSize() >= 2);
-  int32_t right = Pop().i32();
-  int32_t left = Pop().i32();
-  Push(left - right);
+
+  auto right = Pop();
+  auto left = Pop();
+
+  if (left.Type() == ArgumentType::i64 && right.Type() == ArgumentType::i64)
+    Push(left.i64() - right.i64());
+  else if (left.Type() == ArgumentType::i64 &&
+           right.Type() == ArgumentType::i32)
+    Push(left.i64() - right.i32());
+  else if (left.Type() == ArgumentType::i32 &&
+           right.Type() == ArgumentType::i64)
+    Push(left.i32() - right.i64());
+  else
+    Push(left.i32() - right.i32());
 }
 
 TEST_CASE("Verify subtract opcode behavior") {
@@ -82,4 +93,36 @@ TEST_CASE("Verify subtract opcode behavior") {
   Push(43);
   Subtract();
   CHECK(Pop().i32() == -1);
+}
+
+TEST_CASE("Verify subtract opcode behavior for 64-bit integers") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const int64_t right = 15;
+  const int64_t expected = numeric_limits<int64_t>::max() - 35;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == expected);
+}
+
+TEST_CASE("Verify subtract opcode behavior for a 64-bit integer and a 32-bit "
+          "integer") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const int32_t right = 15;
+  const int64_t expected = numeric_limits<int64_t>::max() - 35;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == expected);
+}
+
+TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 64-bit "
+          "integer") {
+  const int32_t left = 15;
+  const int64_t right = numeric_limits<int64_t>::max();
+  const int64_t expected = numeric_limits<int64_t>::min() + 16;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == expected);
 }
