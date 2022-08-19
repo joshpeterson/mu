@@ -70,6 +70,24 @@ TEST_CASE(
   CHECK(Pop().i64() == expected);
 }
 
+TEST_CASE("Verify add opcode 32-bit integer overflow") {
+  const int32_t left = numeric_limits<int32_t>::max();
+  const int32_t right = 1;
+  Push(left);
+  Push(right);
+  Add();
+  CHECK(Pop().i32() == numeric_limits<int32_t>::min());
+}
+
+TEST_CASE("Verify add opcode 64-bit integer overflow") {
+  const int64_t left = numeric_limits<int64_t>::max();
+  const int64_t right = 1;
+  Push(left);
+  Push(right);
+  Add();
+  CHECK(Pop().i64() == numeric_limits<int64_t>::min());
+}
+
 void Subtract() {
   assert(StackSize() >= 2);
 
@@ -125,4 +143,22 @@ TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 64-bit "
   Push(right);
   Subtract();
   CHECK(Pop().i64() == expected);
+}
+
+TEST_CASE("Verify subtract opcode 32-bit integer overflow") {
+  const int32_t left = numeric_limits<int32_t>::min();
+  const int32_t right = 1;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i32() == numeric_limits<int32_t>::max());
+}
+
+TEST_CASE("Verify subtract add opcode 64-bit integer overflow") {
+  const int64_t left = numeric_limits<int64_t>::min();
+  const int64_t right = 1;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == numeric_limits<int64_t>::max());
 }
