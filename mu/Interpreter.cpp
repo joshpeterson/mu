@@ -1,6 +1,7 @@
 #include <doctest.h>
 
 #include <cassert>
+
 #include <limits>
 using std::numeric_limits;
 
@@ -13,22 +14,42 @@ using std::numeric_limits;
 // execute. Each instruction implementation is responsible to operating on the
 // value stack properly.
 
-void Add() {
+// Binary arithmetic operations will all need to load instructions from the
+// value stack in the same way. This define hides a bit of ugliness in C++,
+// which does not allow function pointers to be defined from generic functions,
+// but can allow one generic lambda to be used for multiple arguments. This
+// means we cannot have just one argument to the implementation of the function
+// which pulls values from the stack with the proper types. Instead, we hide
+// that complexity with this macro.
+#define PerformBinaryOperation(op) PerformBinaryOperationImpl(op, op, op, op)
+
+typedef int32_t (*Operation3232)(int32_t, int32_t);
+typedef int64_t (*Operation3264)(int32_t, int64_t);
+typedef int64_t (*Operation6432)(int64_t, int32_t);
+typedef int64_t (*Operation6464)(int64_t, int64_t);
+
+void PerformBinaryOperationImpl(Operation3232 op3232, Operation3264 op3264,
+                                Operation6432 op6432, Operation6464 op6464) {
   assert(StackSize() >= 2);
 
-  auto left = Pop();
   auto right = Pop();
+  auto left = Pop();
 
   if (left.Type() == ArgumentType::i64 && right.Type() == ArgumentType::i64)
-    Push(left.i64() + right.i64());
+    Push(op6464(left.i64(), right.i64()));
   else if (left.Type() == ArgumentType::i64 &&
            right.Type() == ArgumentType::i32)
-    Push(left.i64() + right.i32());
+    Push(op6432(left.i64(), right.i32()));
   else if (left.Type() == ArgumentType::i32 &&
            right.Type() == ArgumentType::i64)
-    Push(left.i32() + right.i64());
+    Push(op3264(left.i32(), right.i64()));
   else
-    Push(left.i32() + right.i32());
+    Push(op3232(left.i32(), right.i32()));
+}
+
+void Add() {
+  auto add = [](auto left, auto right) { return left + right; };
+  PerformBinaryOperation(add);
 }
 
 TEST_CASE("Verify add opcode behavior for 32-bit integers") {
@@ -89,21 +110,8 @@ TEST_CASE("Verify add opcode 64-bit integer overflow") {
 }
 
 void Subtract() {
-  assert(StackSize() >= 2);
-
-  auto right = Pop();
-  auto left = Pop();
-
-  if (left.Type() == ArgumentType::i64 && right.Type() == ArgumentType::i64)
-    Push(left.i64() - right.i64());
-  else if (left.Type() == ArgumentType::i64 &&
-           right.Type() == ArgumentType::i32)
-    Push(left.i64() - right.i32());
-  else if (left.Type() == ArgumentType::i32 &&
-           right.Type() == ArgumentType::i64)
-    Push(left.i32() - right.i64());
-  else
-    Push(left.i32() - right.i32());
+  auto subtract = [](auto left, auto right) { return left - right; };
+  PerformBinaryOperation(subtract);
 }
 
 TEST_CASE("Verify subtract opcode behavior") {
