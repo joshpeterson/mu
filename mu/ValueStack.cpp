@@ -15,11 +15,11 @@ using std::stack;
 // It is an implementation detail that we don't want to leak to any other code.
 // Other code should only use the "Value Stack" based its public API (i.e. its
 // methods).
-static stack<int64_t> valueStack;
+static stack<Argument> valueStack;
 
-void Push(int64_t value) { valueStack.push(value); }
+void Push(Argument value) { valueStack.push(value); }
 
-int64_t Pop() {
+Argument Pop() {
   auto value = valueStack.top();
   valueStack.pop();
   return value;
@@ -29,8 +29,8 @@ int StackSize() { return valueStack.size(); }
 
 TEST_CASE("Verify value stack behavior") {
   Push(42);
-  CHECK(Pop() == 42);
+  CHECK(Pop().i32() == 42);
 
   Push(43);
-  CHECK(Pop() == 43);
+  CHECK(Pop().i32() == 43);
 }

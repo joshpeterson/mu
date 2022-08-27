@@ -4,6 +4,8 @@
 
 #include <fmt/format.h>
 
+#include "Argument.hpp"
+
 // == Bytecode ==
 //
 // The bytecode for μ is an array of instructions.
@@ -25,7 +27,7 @@ enum class OpCode {
 
 struct Instruction {
   OpCode opCode;
-  int64_t argument;
+  Argument argument;
 };
 
 inline bool operator==(Instruction left, Instruction right) {

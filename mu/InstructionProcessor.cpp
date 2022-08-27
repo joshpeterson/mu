@@ -8,7 +8,7 @@ using fmt::format;
 
 #include "Bytecode.hpp"
 #include "InstructionProcessor.hpp"
-#include "Interpreter.hpp"
+#include "Interpreter/Interpreter.hpp"
 #include "ValueStack.hpp"
 
 // == Instruction Processor ==
@@ -36,7 +36,7 @@ TEST_CASE("Verify instruction processing behavior") {
     Instruction instructions[] = {
         {OpCode::Push, 2}, {OpCode::Push, 3}, {OpCode::Add}};
     Process(instructions);
-    CHECK(Pop() == 5);
+    CHECK(Pop().i32() == 5);
   }
 
   SUBCASE("Push three values, pop one and subtract") {
@@ -47,6 +47,6 @@ TEST_CASE("Verify instruction processing behavior") {
                                   {OpCode::Pop},
                                   {OpCode::Subtract}};
     Process(instructions);
-    CHECK(Pop() == -1);
+    CHECK(Pop().i32() == -1);
   }
 }
