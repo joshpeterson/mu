@@ -66,36 +66,36 @@ TEST_CASE("Can get the value of a 64-bit integer") {
   CHECK(entry.i64() == expected);
 }
 
-TEST_CASE("A Argument i32 is equal to itself") {
+TEST_CASE("An Argument i32 is equal to itself") {
   Argument entry(42);
   CHECK(entry == entry);
 }
 
-TEST_CASE("A Argument i32 is equal to another Argument with the same value") {
+TEST_CASE("An Argument i32 is equal to another Argument with the same value") {
   Argument entry1(42);
   Argument entry2(42);
   CHECK(entry1 == entry2);
 }
 
-TEST_CASE("A Argument i32 is not equal to another Argument with the same type "
+TEST_CASE("An Argument i32 is not equal to another Argument with the same type "
           "and a different value") {
   Argument entry1(42);
   Argument entry2(43);
   CHECK(entry1 != entry2);
 }
 
-TEST_CASE("A Argument i64 is equal to itself") {
+TEST_CASE("An Argument i64 is equal to itself") {
   Argument entry((int64_t)42);
   CHECK(entry == entry);
 }
 
-TEST_CASE("A Argument i64 is equal to another Argument with the same value") {
+TEST_CASE("An Argument i64 is equal to another Argument with the same value") {
   Argument entry1((int64_t)42);
   Argument entry2((int64_t)42);
   CHECK(entry1 == entry2);
 }
 
-TEST_CASE("A Argument i64 is not equal to another Argument with the same type "
+TEST_CASE("An Argument i64 is not equal to another Argument with the same type "
           "and a different value") {
   Argument entry1((int64_t)42);
   Argument entry2((int64_t)43);
