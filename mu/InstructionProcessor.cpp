@@ -8,7 +8,7 @@ using fmt::format;
 
 #include "Bytecode.hpp"
 #include "InstructionProcessor.hpp"
-#include "Interpreter.hpp"
+#include "Interpreter/Interpreter.hpp"
 #include "ValueStack.hpp"
 
 // == Instruction Processor ==

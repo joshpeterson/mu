@@ -9,7 +9,9 @@ set(SOURCE_FILES
   main.cpp
   mu/Argument.cpp
   mu/Loader.cpp
-  mu/Interpreter.cpp
+  mu/Interpreter/Add.cpp
+  mu/Interpreter/BinaryArithmeticOperation.cpp
+  mu/Interpreter/Subtract.cpp
   mu/InstructionProcessor.cpp
   mu/ReadOnlyMemoryMappedFile.cpp
   mu/ValueStack.cpp
@@ -21,6 +23,8 @@ add_subdirectory(external/fmt)
 add_subdirectory(external/doctest)
 
 add_executable(mu ${SOURCE_FILES})
+
+target_include_directories(mu PRIVATE ${CMAKE_SOURCE_DIR}/mu) 
 
 target_link_libraries(mu PRIVATE fmt doctest)
 
