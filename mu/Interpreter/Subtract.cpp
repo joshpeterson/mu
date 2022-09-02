@@ -8,8 +8,7 @@ using std::numeric_limits;
 #include "ValueStack.hpp"
 
 void Subtract() {
-  auto subtract = [](auto left, auto right) { return left - right; };
-  PerformBinaryOperation(subtract);
+  PerformBinaryOperation([](auto left, auto right) { return left - right; });
 }
 
 TEST_CASE("Verify subtract opcode behavior") {

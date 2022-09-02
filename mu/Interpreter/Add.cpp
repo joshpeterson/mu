@@ -8,8 +8,7 @@ using std::numeric_limits;
 #include "ValueStack.hpp"
 
 void Add() {
-  auto add = [](auto left, auto right) { return left + right; };
-  PerformBinaryOperation(add);
+  PerformBinaryOperation([](auto left, auto right) { return left + right; });
 }
 
 TEST_CASE("Verify add opcode behavior for 32-bit integers") {
