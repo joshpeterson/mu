@@ -27,6 +27,8 @@ Argument::Argument(double value) : m_Type(ArgumentType::f64) {
   m_Data.f64 = value;
 }
 
+Argument::Argument(bool value) : m_Type(ArgumentType::b) { m_Data.b = value; }
+
 ArgumentType Argument::Type() const { return m_Type; }
 
 int32_t Argument::i32() const {
@@ -49,6 +51,11 @@ double Argument::f64() const {
   return m_Data.f64;
 }
 
+bool Argument::b() const {
+  assert(m_Type == ArgumentType::b);
+  return m_Data.b;
+}
+
 bool operator==(const Argument& left, const Argument& right) {
   if (left.Type() != right.Type())
     return false;
@@ -67,6 +74,9 @@ bool operator==(const Argument& left, const Argument& right) {
 
   if (left.Type() == ArgumentType::f64)
     return left.f64() == right.f64();
+
+  if (left.Type() == ArgumentType::b)
+    return left.b() == right.b();
 
   assert(0 && "Missing case for Argument equality");
 }
@@ -113,6 +123,12 @@ TEST_CASE("Can get the value of a 64-bit float") {
   const double expected = 42;
   Argument entry(expected);
   CHECK(entry.f64() == expected);
+}
+
+TEST_CASE("Can get the value of a boolean") {
+  const bool expected = true;
+  Argument entry(expected);
+  CHECK(entry.b() == expected);
 }
 
 TEST_CASE("An Argument i32 is equal to itself") {
@@ -187,6 +203,26 @@ TEST_CASE("An Argument f64 is not equal to another Argument with the same type "
   CHECK(entry1 != entry2);
 }
 
+TEST_CASE("An Argument boolean is equal to itself") {
+  Argument entry(true);
+  CHECK(entry == entry);
+}
+
+TEST_CASE(
+    "An Argument boolean is equal to another Argument with the same value") {
+  Argument entry1(true);
+  Argument entry2(true);
+  CHECK(entry1 == entry2);
+}
+
+TEST_CASE(
+    "An Argument boolean is not equal to another Argument with the same type "
+    "and a different value") {
+  Argument entry1(true);
+  Argument entry2(false);
+  CHECK(entry1 != entry2);
+}
+
 TEST_CASE("Two empty Arguments are equal to each other") {
   Argument argument1;
   Argument argument2;
@@ -216,4 +252,9 @@ TEST_CASE("Can format f32 Argument") {
 TEST_CASE("Can format f64 Argument") {
   Argument argument(42.);
   CHECK("42 (f64)" == format("{}", argument));
+}
+
+TEST_CASE("Can format boolean Argument") {
+  Argument argument(true);
+  CHECK("true (bool)" == format("{}", argument));
 }
