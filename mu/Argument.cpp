@@ -146,3 +146,23 @@ TEST_CASE("Two empty Arguments are equal to each other") {
   Argument argument2;
   CHECK(argument1 == argument2);
 }
+
+TEST_CASE("Can format empty Argument") {
+  Argument empty;
+  CHECK("No argument" == format("{}", empty));
+}
+
+TEST_CASE("Can format i32 Argument") {
+  Argument argument(42);
+  CHECK("42 (i32)" == format("{}", argument));
+}
+
+TEST_CASE("Can format i64 Argument") {
+  Argument argument((int64_t)42);
+  CHECK("42 (i64)" == format("{}", argument));
+}
+
+TEST_CASE("Can format f32 Argument") {
+  Argument argument(42.f);
+  CHECK("42 (f32)" == format("{}", argument));
+}

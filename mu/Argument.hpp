@@ -33,22 +33,33 @@ private:
 
 bool operator==(const Argument& left, const Argument& right);
 
-template <> struct fmt::formatter<Argument> : formatter<string_view> {
-  // parse is inherited from formatter<string_view>.
+template <> struct fmt::formatter<Argument> {
+  constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+    auto it = ctx.begin(), end = ctx.end();
+
+    // Check if reached the end of the range:
+    if (it != end && *it != '}')
+      throw format_error("invalid format");
+
+    // Return an iterator past the end of the parsed range:
+    return it;
+  }
+
   template <typename FormatContext>
-  auto format(Argument c, FormatContext& ctx) {
-    string_view name = "unknown";
-    switch (c.Type()) {
+  auto format(const Argument& argument, FormatContext& ctx) const
+      -> decltype(ctx.out()) {
+    switch (argument.Type()) {
     case ArgumentType::None:
-      name = "No argument";
-      break;
+      return fmt::format_to(ctx.out(), "No argument");
     case ArgumentType::i32:
-      name = fmt::format("{} (i32)", c.i32());
-      break;
+      return fmt::format_to(ctx.out(), "{} (i32)", argument.i32());
     case ArgumentType::i64:
-      name = fmt::format("{} (i64)", c.i64());
-      break;
+      return fmt::format_to(ctx.out(), "{} (i64)", argument.i64());
+    case ArgumentType::f32:
+      return fmt::format_to(ctx.out(), "{} (f32)", argument.f32());
+    default:
+      assert(0 && "Missing Argument formatting case");
     }
-    return formatter<string_view>::format(name, ctx);
+    return ctx.out();
   }
 };
