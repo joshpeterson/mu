@@ -11,39 +11,15 @@ void Subtract() {
   PerformBinaryOperation([](auto left, auto right) { return left - right; });
 }
 
-TEST_CASE("Verify subtract opcode behavior") {
-  Push(42);
-  Push(43);
-  Subtract();
-  CHECK(Pop().i32() == -1);
-}
-
-TEST_CASE("Verify subtract opcode behavior for 64-bit integers") {
-  const int64_t left = numeric_limits<int64_t>::max() - 20;
-  const int64_t right = 15;
-  const int64_t expected = numeric_limits<int64_t>::max() - 35;
-  Push(left);
-  Push(right);
-  Subtract();
-  CHECK(Pop().i64() == expected);
-}
-
-TEST_CASE("Verify subtract opcode behavior for 32-bit floats") {
-  Push(42.f);
-  Push(43.f);
-  Subtract();
-  CHECK(Pop().f32() == -1.f);
-}
-
-TEST_CASE("Verify subtract opcode behavior for a 64-bit integer and a 32-bit "
+TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 32-bit "
           "integer") {
-  const int64_t left = numeric_limits<int64_t>::max() - 20;
-  const int32_t right = 15;
-  const int64_t expected = numeric_limits<int64_t>::max() - 35;
+  const int32_t left = 42;
+  const int32_t right = 43;
+  const int32_t expected = -1;
   Push(left);
   Push(right);
   Subtract();
-  CHECK(Pop().i64() == expected);
+  CHECK(Pop().i32() == expected);
 }
 
 TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 64-bit "
@@ -58,6 +34,61 @@ TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 64-bit "
 }
 
 TEST_CASE(
+    "Verify subtract opcode behavior for a 32-bit integer and a 32-bit float") {
+  const int32_t left = 15;
+  const float right = 20.f;
+  const float expected = -5.f;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE("Verify subtract opcode behavior for a 64-bit integer and a 64-bit "
+          "integer") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const int64_t right = 15;
+  const int64_t expected = numeric_limits<int64_t>::max() - 35;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == expected);
+}
+
+TEST_CASE("Verify subtract opcode behavior for a 64-bit integer and a 32-bit "
+          "integer") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const int32_t right = 15;
+  const int64_t expected = numeric_limits<int64_t>::max() - 35;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().i64() == expected);
+}
+
+TEST_CASE(
+    "Verify subtract opcode behavior for a 64-bit integer and a 32-bit float") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const float right = -15.f;
+  const float expected = numeric_limits<int64_t>::max() - 5;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE(
+    "Verify subtract opcode behavior for a 32-bit float and a 32-bit float") {
+  const float left = 42;
+  const float right = 43;
+  const float expected = -1;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE(
     "Verify subtract opcode behavior for a 32-bit float and a 32-bit integer") {
   const float left = 20.f;
   const int32_t right = 15;
@@ -69,32 +100,10 @@ TEST_CASE(
 }
 
 TEST_CASE(
-    "Verify subtract opcode behavior for a 32-bit integer and a 32-bit float") {
-  const int32_t left = 15;
-  const float right = 20.f;
-  const float expected = -5.f;
-  Push(left);
-  Push(right);
-  Subtract();
-  CHECK(Pop().f32() == expected);
-}
-
-TEST_CASE(
     "Verify subtract opcode behavior for a 32-bit float and a 64-bit integer") {
   const float left = 15.f;
   const int64_t right = numeric_limits<int64_t>::max() - 20;
   const float expected = -(numeric_limits<int64_t>::max() - 5);
-  Push(left);
-  Push(right);
-  Subtract();
-  CHECK(Pop().f32() == expected);
-}
-
-TEST_CASE(
-    "Verify subtract opcode behavior for a 64-bit integer and a 32-bit float") {
-  const int64_t left = numeric_limits<int64_t>::max() - 20;
-  const float right = -15.f;
-  const float expected = numeric_limits<int64_t>::max() - 5;
   Push(left);
   Push(right);
   Subtract();
