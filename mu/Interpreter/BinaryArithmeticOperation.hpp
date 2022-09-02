@@ -14,10 +14,12 @@ void PerformBinaryOperation(OperationCallback&& op) {
   if (left.Type() == ArgumentType::i32) {
     if (right.Type() == ArgumentType::i32)
       Push(op(left.i32(), right.i32()));
-    else if (right.Type() == ArgumentType::f32)
-      Push(op(left.i32(), right.f32()));
     else if (right.Type() == ArgumentType::i64)
       Push(op(left.i32(), right.i64()));
+    else if (right.Type() == ArgumentType::f32)
+      Push(op(left.i32(), right.f32()));
+    else if (right.Type() == ArgumentType::f64)
+      Push(op(left.i32(), right.f64()));
   } else if (left.Type() == ArgumentType::i64) {
     if (right.Type() == ArgumentType::i64)
       Push(op(left.i64(), right.i64()));
@@ -25,6 +27,8 @@ void PerformBinaryOperation(OperationCallback&& op) {
       Push(op(left.i64(), right.i32()));
     else if (right.Type() == ArgumentType::f32)
       Push(op(left.i64(), right.f32()));
+    else if (right.Type() == ArgumentType::f64)
+      Push(op(left.i64(), right.f64()));
   } else if (left.Type() == ArgumentType::f32) {
     if (right.Type() == ArgumentType::f32)
       Push(op(left.f32(), right.f32()));
@@ -32,6 +36,17 @@ void PerformBinaryOperation(OperationCallback&& op) {
       Push(op(left.f32(), right.i32()));
     else if (right.Type() == ArgumentType::i64)
       Push(op(left.f32(), right.i64()));
+    else if (right.Type() == ArgumentType::f64)
+      Push(op(left.f32(), right.f64()));
+  } else if (left.Type() == ArgumentType::f64) {
+    if (right.Type() == ArgumentType::f64)
+      Push(op(left.f64(), right.f64()));
+    else if (right.Type() == ArgumentType::i32)
+      Push(op(left.f64(), right.i32()));
+    else if (right.Type() == ArgumentType::i64)
+      Push(op(left.f64(), right.i64()));
+    else if (right.Type() == ArgumentType::f32)
+      Push(op(left.f64(), right.f32()));
   } else
     assert(0 && "Missing binary arithmetic operation case");
 }
