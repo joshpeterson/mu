@@ -10,7 +10,6 @@ set(SOURCE_FILES
   mu/Argument.cpp
   mu/Loader.cpp
   mu/Interpreter/Add.cpp
-  mu/Interpreter/BinaryArithmeticOperation.cpp
   mu/Interpreter/Subtract.cpp
   mu/InstructionProcessor.cpp
   mu/ReadOnlyMemoryMappedFile.cpp

@@ -1,30 +1,33 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 
 #include <fmt/core.h>
 #include <fmt/format.h>
 
-enum class ArgumentType {
-  None,
-  i64,
-  i32,
-};
+enum class ArgumentType { None, i64, i32, f32, f64 };
 
 union ArgumentData {
   int64_t i64;
   int32_t i32;
+  float f32;
+  double f64;
 };
 
 struct Argument {
   Argument();
   Argument(int32_t value);
   Argument(int64_t value);
+  Argument(float value);
+  Argument(double value);
 
   ArgumentType Type() const;
 
   int64_t i64() const;
   int32_t i32() const;
+  float f32() const;
+  double f64() const;
 
 private:
   ArgumentType m_Type;
@@ -33,22 +36,35 @@ private:
 
 bool operator==(const Argument& left, const Argument& right);
 
-template <> struct fmt::formatter<Argument> : formatter<string_view> {
-  // parse is inherited from formatter<string_view>.
+template <> struct fmt::formatter<Argument> {
+  constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin()) {
+    auto it = ctx.begin(), end = ctx.end();
+
+    // Check if reached the end of the range:
+    if (it != end && *it != '}')
+      throw format_error("invalid format");
+
+    // Return an iterator past the end of the parsed range:
+    return it;
+  }
+
   template <typename FormatContext>
-  auto format(Argument c, FormatContext& ctx) {
-    string_view name = "unknown";
-    switch (c.Type()) {
+  auto format(const Argument& argument, FormatContext& ctx) const
+      -> decltype(ctx.out()) {
+    switch (argument.Type()) {
     case ArgumentType::None:
-      name = "No argument";
-      break;
+      return fmt::format_to(ctx.out(), "No argument");
     case ArgumentType::i32:
-      name = fmt::format("{} (i32)", c.i32());
-      break;
+      return fmt::format_to(ctx.out(), "{} (i32)", argument.i32());
     case ArgumentType::i64:
-      name = fmt::format("{} (i64)", c.i64());
-      break;
+      return fmt::format_to(ctx.out(), "{} (i64)", argument.i64());
+    case ArgumentType::f32:
+      return fmt::format_to(ctx.out(), "{} (f32)", argument.f32());
+    case ArgumentType::f64:
+      return fmt::format_to(ctx.out(), "{} (f64)", argument.f64());
+    default:
+      assert(0 && "Missing Argument formatting case");
     }
-    return formatter<string_view>::format(name, ctx);
+    return ctx.out();
   }
 };

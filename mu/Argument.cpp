@@ -4,6 +4,9 @@
 #include <limits>
 using std::numeric_limits;
 
+#include <fmt/core.h>
+using fmt::format;
+
 #include "Argument.hpp"
 
 Argument::Argument() : m_Type(ArgumentType::None) {}
@@ -16,6 +19,14 @@ Argument::Argument(int64_t value) : m_Type(ArgumentType::i64) {
   m_Data.i64 = value;
 }
 
+Argument::Argument(float value) : m_Type(ArgumentType::f32) {
+  m_Data.f32 = value;
+}
+
+Argument::Argument(double value) : m_Type(ArgumentType::f64) {
+  m_Data.f64 = value;
+}
+
 ArgumentType Argument::Type() const { return m_Type; }
 
 int32_t Argument::i32() const {
@@ -26,6 +37,16 @@ int32_t Argument::i32() const {
 int64_t Argument::i64() const {
   assert(m_Type == ArgumentType::i64);
   return m_Data.i64;
+}
+
+float Argument::f32() const {
+  assert(m_Type == ArgumentType::f32);
+  return m_Data.f32;
+}
+
+double Argument::f64() const {
+  assert(m_Type == ArgumentType::f64);
+  return m_Data.f64;
 }
 
 bool operator==(const Argument& left, const Argument& right) {
@@ -41,6 +62,12 @@ bool operator==(const Argument& left, const Argument& right) {
   if (left.Type() == ArgumentType::i64)
     return left.i64() == right.i64();
 
+  if (left.Type() == ArgumentType::f32)
+    return left.f32() == right.f32();
+
+  if (left.Type() == ArgumentType::f64)
+    return left.f64() == right.f64();
+
   assert(0 && "Missing case for Argument equality");
 }
 
@@ -52,6 +79,16 @@ TEST_CASE("Can get the type of a 32-bit integer") {
 TEST_CASE("Can get the type of a 64-bit integer") {
   Argument entry((int64_t)0);
   CHECK(entry.Type() == ArgumentType::i64);
+}
+
+TEST_CASE("Can get the type of a 32-bit float") {
+  Argument entry((float)0);
+  CHECK(entry.Type() == ArgumentType::f32);
+}
+
+TEST_CASE("Can get the type of a 64-bit float") {
+  Argument entry((double)0);
+  CHECK(entry.Type() == ArgumentType::f64);
 }
 
 TEST_CASE("Can get the value of a 32-bit integer") {
@@ -66,39 +103,87 @@ TEST_CASE("Can get the value of a 64-bit integer") {
   CHECK(entry.i64() == expected);
 }
 
-TEST_CASE("A Argument i32 is equal to itself") {
+TEST_CASE("Can get the value of a 32-bit float") {
+  const float expected = 42;
+  Argument entry(expected);
+  CHECK(entry.f32() == expected);
+}
+
+TEST_CASE("Can get the value of a 64-bit float") {
+  const double expected = 42;
+  Argument entry(expected);
+  CHECK(entry.f64() == expected);
+}
+
+TEST_CASE("An Argument i32 is equal to itself") {
   Argument entry(42);
   CHECK(entry == entry);
 }
 
-TEST_CASE("A Argument i32 is equal to another Argument with the same value") {
+TEST_CASE("An Argument i32 is equal to another Argument with the same value") {
   Argument entry1(42);
   Argument entry2(42);
   CHECK(entry1 == entry2);
 }
 
-TEST_CASE("A Argument i32 is not equal to another Argument with the same type "
+TEST_CASE("An Argument i32 is not equal to another Argument with the same type "
           "and a different value") {
   Argument entry1(42);
   Argument entry2(43);
   CHECK(entry1 != entry2);
 }
 
-TEST_CASE("A Argument i64 is equal to itself") {
+TEST_CASE("An Argument i64 is equal to itself") {
   Argument entry((int64_t)42);
   CHECK(entry == entry);
 }
 
-TEST_CASE("A Argument i64 is equal to another Argument with the same value") {
+TEST_CASE("An Argument i64 is equal to another Argument with the same value") {
   Argument entry1((int64_t)42);
   Argument entry2((int64_t)42);
   CHECK(entry1 == entry2);
 }
 
-TEST_CASE("A Argument i64 is not equal to another Argument with the same type "
+TEST_CASE("An Argument i64 is not equal to another Argument with the same type "
           "and a different value") {
   Argument entry1((int64_t)42);
   Argument entry2((int64_t)43);
+  CHECK(entry1 != entry2);
+}
+
+TEST_CASE("An Argument f32 is equal to itself") {
+  Argument entry(42.f);
+  CHECK(entry == entry);
+}
+
+TEST_CASE("An Argument f32 is equal to another Argument with the same value") {
+  Argument entry1(42.f);
+  Argument entry2(42.f);
+  CHECK(entry1 == entry2);
+}
+
+TEST_CASE("An Argument f32 is not equal to another Argument with the same type "
+          "and a different value") {
+  Argument entry1(42.);
+  Argument entry2(43.);
+  CHECK(entry1 != entry2);
+}
+
+TEST_CASE("An Argument f64 is equal to itself") {
+  Argument entry(42.);
+  CHECK(entry == entry);
+}
+
+TEST_CASE("An Argument f64 is equal to another Argument with the same value") {
+  Argument entry1(42.);
+  Argument entry2(42.);
+  CHECK(entry1 == entry2);
+}
+
+TEST_CASE("An Argument f64 is not equal to another Argument with the same type "
+          "and a different value") {
+  Argument entry1(42.);
+  Argument entry2(43.);
   CHECK(entry1 != entry2);
 }
 
@@ -106,4 +191,29 @@ TEST_CASE("Two empty Arguments are equal to each other") {
   Argument argument1;
   Argument argument2;
   CHECK(argument1 == argument2);
+}
+
+TEST_CASE("Can format empty Argument") {
+  Argument empty;
+  CHECK("No argument" == format("{}", empty));
+}
+
+TEST_CASE("Can format i32 Argument") {
+  Argument argument(42);
+  CHECK("42 (i32)" == format("{}", argument));
+}
+
+TEST_CASE("Can format i64 Argument") {
+  Argument argument((int64_t)42);
+  CHECK("42 (i64)" == format("{}", argument));
+}
+
+TEST_CASE("Can format f32 Argument") {
+  Argument argument(42.f);
+  CHECK("42 (f32)" == format("{}", argument));
+}
+
+TEST_CASE("Can format f64 Argument") {
+  Argument argument(42.);
+  CHECK("42 (f64)" == format("{}", argument));
 }
