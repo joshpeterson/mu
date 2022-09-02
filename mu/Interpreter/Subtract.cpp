@@ -28,6 +28,13 @@ TEST_CASE("Verify subtract opcode behavior for 64-bit integers") {
   CHECK(Pop().i64() == expected);
 }
 
+TEST_CASE("Verify subtract opcode behavior for 32-bit floats") {
+  Push(42.f);
+  Push(43.f);
+  Subtract();
+  CHECK(Pop().f32() == -1.f);
+}
+
 TEST_CASE("Verify subtract opcode behavior for a 64-bit integer and a 32-bit "
           "integer") {
   const int64_t left = numeric_limits<int64_t>::max() - 20;
@@ -50,6 +57,50 @@ TEST_CASE("Verify subtract opcode behavior for a 32-bit integer and a 64-bit "
   CHECK(Pop().i64() == expected);
 }
 
+TEST_CASE(
+    "Verify subtract opcode behavior for a 32-bit float and a 32-bit integer") {
+  const float left = 20.f;
+  const int32_t right = 15;
+  const float expected = 5.f;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE(
+    "Verify subtract opcode behavior for a 32-bit integer and a 32-bit float") {
+  const int32_t left = 15;
+  const float right = 20.f;
+  const float expected = -5.f;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE(
+    "Verify subtract opcode behavior for a 32-bit float and a 64-bit integer") {
+  const float left = 15.f;
+  const int64_t right = numeric_limits<int64_t>::max() - 20;
+  const float expected = -(numeric_limits<int64_t>::max() - 5);
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
+TEST_CASE(
+    "Verify subtract opcode behavior for a 64-bit integer and a 32-bit float") {
+  const int64_t left = numeric_limits<int64_t>::max() - 20;
+  const float right = -15.f;
+  const float expected = numeric_limits<int64_t>::max() - 5;
+  Push(left);
+  Push(right);
+  Subtract();
+  CHECK(Pop().f32() == expected);
+}
+
 TEST_CASE("Verify subtract opcode 32-bit integer overflow") {
   const int32_t left = numeric_limits<int32_t>::min();
   const int32_t right = 1;
@@ -59,7 +110,7 @@ TEST_CASE("Verify subtract opcode 32-bit integer overflow") {
   CHECK(Pop().i32() == numeric_limits<int32_t>::max());
 }
 
-TEST_CASE("Verify subtract add opcode 64-bit integer overflow") {
+TEST_CASE("Verify subtract opcode 64-bit integer overflow") {
   const int64_t left = numeric_limits<int64_t>::min();
   const int64_t right = 1;
   Push(left);

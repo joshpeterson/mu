@@ -4,6 +4,9 @@
 #include <limits>
 using std::numeric_limits;
 
+#include <fmt/core.h>
+using fmt::format;
+
 #include "Argument.hpp"
 
 Argument::Argument() : m_Type(ArgumentType::None) {}
@@ -14,6 +17,10 @@ Argument::Argument(int32_t value) : m_Type(ArgumentType::i32) {
 
 Argument::Argument(int64_t value) : m_Type(ArgumentType::i64) {
   m_Data.i64 = value;
+}
+
+Argument::Argument(float value) : m_Type(ArgumentType::f32) {
+  m_Data.f32 = value;
 }
 
 ArgumentType Argument::Type() const { return m_Type; }
@@ -28,6 +35,11 @@ int64_t Argument::i64() const {
   return m_Data.i64;
 }
 
+float Argument::f32() const {
+  assert(m_Type == ArgumentType::f32);
+  return m_Data.f32;
+}
+
 bool operator==(const Argument& left, const Argument& right) {
   if (left.Type() != right.Type())
     return false;
@@ -40,6 +52,9 @@ bool operator==(const Argument& left, const Argument& right) {
 
   if (left.Type() == ArgumentType::i64)
     return left.i64() == right.i64();
+
+  if (left.Type() == ArgumentType::f32)
+    return left.f32() == right.f32();
 
   assert(0 && "Missing case for Argument equality");
 }
@@ -64,6 +79,12 @@ TEST_CASE("Can get the value of a 64-bit integer") {
   const int64_t expected = numeric_limits<int64_t>::max() - 2;
   Argument entry(expected);
   CHECK(entry.i64() == expected);
+}
+
+TEST_CASE("Can get the value of a 32-bit float") {
+  const float expected = 42;
+  Argument entry(expected);
+  CHECK(entry.f32() == expected);
 }
 
 TEST_CASE("An Argument i32 is equal to itself") {
@@ -99,6 +120,24 @@ TEST_CASE("An Argument i64 is not equal to another Argument with the same type "
           "and a different value") {
   Argument entry1((int64_t)42);
   Argument entry2((int64_t)43);
+  CHECK(entry1 != entry2);
+}
+
+TEST_CASE("An Argument f32 is equal to itself") {
+  Argument entry(42.f);
+  CHECK(entry == entry);
+}
+
+TEST_CASE("An Argument f32 is equal to another Argument with the same value") {
+  Argument entry1(42.f);
+  Argument entry2(42.f);
+  CHECK(entry1 == entry2);
+}
+
+TEST_CASE("An Argument f32 is not equal to another Argument with the same type "
+          "and a different value") {
+  Argument entry1(42.f);
+  Argument entry2(43.f);
   CHECK(entry1 != entry2);
 }
 
