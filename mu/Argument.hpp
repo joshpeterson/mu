@@ -6,7 +6,7 @@
 #include <fmt/core.h>
 #include <fmt/format.h>
 
-enum class ArgumentType { None, i64, i32, f32, f64, b };
+enum class ArgumentType { None, i64, i32, f32, f64, b, c };
 
 union ArgumentData {
   int64_t i64;
@@ -14,6 +14,7 @@ union ArgumentData {
   float f32;
   double f64;
   bool b;
+  char c;
 };
 
 struct Argument {
@@ -23,6 +24,7 @@ struct Argument {
   Argument(float value);
   Argument(double value);
   Argument(bool value);
+  Argument(char value);
 
   ArgumentType Type() const;
 
@@ -31,6 +33,7 @@ struct Argument {
   float f32() const;
   double f64() const;
   bool b() const;
+  char c() const;
 
 private:
   ArgumentType m_Type;
@@ -67,6 +70,8 @@ template <> struct fmt::formatter<Argument> {
       return fmt::format_to(ctx.out(), "{} (f64)", argument.f64());
     case ArgumentType::b:
       return fmt::format_to(ctx.out(), "{} (bool)", argument.b());
+    case ArgumentType::c:
+      return fmt::format_to(ctx.out(), "{} (char)", argument.c());
     default:
       assert(0 && "Missing Argument formatting case");
     }

@@ -29,6 +29,8 @@ Argument::Argument(double value) : m_Type(ArgumentType::f64) {
 
 Argument::Argument(bool value) : m_Type(ArgumentType::b) { m_Data.b = value; }
 
+Argument::Argument(char value) : m_Type(ArgumentType::c) { m_Data.c = value; }
+
 ArgumentType Argument::Type() const { return m_Type; }
 
 int32_t Argument::i32() const {
@@ -56,6 +58,11 @@ bool Argument::b() const {
   return m_Data.b;
 }
 
+char Argument::c() const {
+  assert(m_Type == ArgumentType::c);
+  return m_Data.c;
+}
+
 bool operator==(const Argument& left, const Argument& right) {
   if (left.Type() != right.Type())
     return false;
@@ -77,6 +84,9 @@ bool operator==(const Argument& left, const Argument& right) {
 
   if (left.Type() == ArgumentType::b)
     return left.b() == right.b();
+
+  if (left.Type() == ArgumentType::c)
+    return left.c() == right.c();
 
   assert(0 && "Missing case for Argument equality");
 }
@@ -129,6 +139,12 @@ TEST_CASE("Can get the value of a boolean") {
   const bool expected = true;
   Argument entry(expected);
   CHECK(entry.b() == expected);
+}
+
+TEST_CASE("Can get the value of a character") {
+  const char expected = 'a';
+  Argument entry(expected);
+  CHECK(entry.c() == expected);
 }
 
 TEST_CASE("An Argument i32 is equal to itself") {
@@ -223,6 +239,26 @@ TEST_CASE(
   CHECK(entry1 != entry2);
 }
 
+TEST_CASE("An Argument character is equal to itself") {
+  Argument entry('a');
+  CHECK(entry == entry);
+}
+
+TEST_CASE(
+    "An Argument character is equal to another Argument with the same value") {
+  Argument entry1('a');
+  Argument entry2('a');
+  CHECK(entry1 == entry2);
+}
+
+TEST_CASE(
+    "An Argument character is not equal to another Argument with the same type "
+    "and a different value") {
+  Argument entry1('a');
+  Argument entry2('b');
+  CHECK(entry1 != entry2);
+}
+
 TEST_CASE("Two empty Arguments are equal to each other") {
   Argument argument1;
   Argument argument2;
@@ -257,4 +293,9 @@ TEST_CASE("Can format f64 Argument") {
 TEST_CASE("Can format boolean Argument") {
   Argument argument(true);
   CHECK("true (bool)" == format("{}", argument));
+}
+
+TEST_CASE("Can format character Argument") {
+  Argument argument('a');
+  CHECK("a (char)" == format("{}", argument));
 }
