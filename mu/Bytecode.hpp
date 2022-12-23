@@ -15,6 +15,8 @@
 // instructions don't need an argument) and it ignored is not required.
 
 enum class OpCode {
+  Nop,
+
   // The push and pop opcodes are special - they implement value stack
   // behavior.
   Push,
@@ -39,6 +41,9 @@ template <> struct fmt::formatter<OpCode> : formatter<string_view> {
   template <typename FormatContext> auto format(OpCode c, FormatContext& ctx) {
     string_view name = "unknown";
     switch (c) {
+    case OpCode::Nop:
+      name = "Nop";
+      break;
     case OpCode::Push:
       name = "Push";
       break;
@@ -55,3 +60,7 @@ template <> struct fmt::formatter<OpCode> : formatter<string_view> {
     return formatter<string_view>::format(name, ctx);
   }
 };
+
+inline doctest::String toString(const OpCode& value) {
+  return fmt::format("{}", value).c_str();
+}

@@ -7,10 +7,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SOURCE_FILES
   main.cpp
-  mu/Argument.cpp
-  mu/Loader.cpp
   mu/Interpreter/Add.cpp
   mu/Interpreter/Subtract.cpp
+  mu/Mutext/Parser.cpp
+  mu/Mutext/StringUtils.cpp
+  mu/Argument.cpp
+  mu/Loader.cpp
+  mu/Log.cpp
   mu/InstructionProcessor.cpp
   mu/ReadOnlyMemoryMappedFile.cpp
   mu/ValueStack.cpp
