@@ -20,4 +20,16 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 
 # [Optional] Uncomment this section to install additional packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends clang-format time python3 fish neovim
+    && apt-get -y install --no-install-recommends clang-format time python3 fish neovim tmux bat nnn fd-find entr silversearcher-ag
+  
+# Install tmux paackage manager
+RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Install nodejs to use Github Copilot
+RUN curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
+
+# Make fish the default shell
+RUN chsh -s /usr/bin/fish
+ENV SHELL /usr/bin/fish
+ENTRYPOINT [ "fish" ]
