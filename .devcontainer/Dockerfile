@@ -28,8 +28,3 @@ RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Install nodejs to use Github Copilot
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
-
-# Make fish the default shell
-RUN chsh -s /usr/bin/fish
-ENV SHELL /usr/bin/fish
-ENTRYPOINT [ "fish" ]

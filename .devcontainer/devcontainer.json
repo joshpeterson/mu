@@ -30,7 +30,7 @@
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// NOTE: Installing fish as the default shell in the Dockerfile means there will be a default ~/.config directory. We need to move that out of the way first.
-	"postCreateCommand": "rm -rf ~/.config && git clone --recurse-submodules https://github.com/joshpeterson/dotfiles.git /home/vscode/.dotfiles && cd /home/vscode/.dotfiles && ./install && curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish",
+	"postCreateCommand": "git clone --recurse-submodules https://github.com/joshpeterson/dotfiles.git /home/vscode/.dotfiles && cd /home/vscode/.dotfiles && ./install && curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish",
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
 	"features": {
