@@ -10,7 +10,12 @@ using fmt::format;
 
 #include "Loader.hpp"
 
-TestFile::TestFile(const char* testFilePath, byte* data, size_t numberOfBytes)
+TestFile::TestFile(const char* testFilePath, const char* data)
+    : TestFile(testFilePath, reinterpret_cast<const byte*>(data),
+               strlen(data)) {}
+
+TestFile::TestFile(const char* testFilePath, const byte* data,
+                   size_t numberOfBytes)
     : m_testFilePath(testFilePath) {
   auto testFileHandle = fopen(m_testFilePath, "wb");
   fwrite(data, 1, numberOfBytes, testFileHandle);

@@ -6,18 +6,27 @@ using fmt::print;
 
 #include "mu/InstructionProcessor.hpp"
 #include "mu/Loader.hpp"
+#include "mu/Mutext/Parser.hpp"
+
+// This is temporary until we have a ret opcode.
+#include "mu/Log.hpp"
+#include "mu/ValueStack.hpp"
 
 int PrintHelp();
 int RunTests(int argc, char* argv[]);
+int ProcessMutextFile(const char* muFilePath);
 int ProcessBytecodeFile(const char* muFilePath);
 
 bool AreEqual(const char* left, const char* right);
+bool IsMutextFile(const char* filePath);
 
 int main(int argc, char** argv) {
   if (argc != 2 || AreEqual(argv[1], "--help")) {
     return PrintHelp();
   } else if (AreEqual(argv[1], "--test")) {
     return RunTests(argc, argv);
+  } else if (IsMutextFile(argv[1])) {
+    return ProcessMutextFile(argv[1]);
   } else {
     return ProcessBytecodeFile(argv[1]);
   }
@@ -27,7 +36,9 @@ int PrintHelp() {
   print("===========================================================\n");
   print("Welcome to the \u03BC VM!\n");
   print("\n");
-  print("Usage: mu <options | file.mu>\n");
+  print("Usage: mu <options | file.mu | file.mut>\n");
+  print("  - file.mu is a binary \u03BC bytecode file.\n");
+  print("  - file.mut is a text \u03BCtext file.\n");
   print("\n");
   print("Options:\n");
   print("  --help - Display this message.\n");
@@ -55,6 +66,15 @@ int RunTests(int argc, char* argv[]) {
   return 1;
 }
 
+int ProcessMutextFile(const char* muFilePath) {
+  auto instructions = ParseMutextFile(muFilePath);
+  Process(instructions);
+  // This is temporary until we have a ret opcode.
+  if (StackSize() > 0)
+    Log("Top value: {}", Pop());
+  return 0;
+}
+
 int ProcessBytecodeFile(const char* muFilePath) {
   Loader loader(muFilePath);
   if (loader.GetInstructions().size() == 0) {
@@ -68,4 +88,8 @@ int ProcessBytecodeFile(const char* muFilePath) {
 
 bool AreEqual(const char* left, const char* right) {
   return strcmp(left, right) == 0;
+}
+
+bool IsMutextFile(const char* filePath) {
+  return string(filePath).ends_with(".mut");
 }

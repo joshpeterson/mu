@@ -11,7 +11,8 @@ using std::span;
 
 class TestFile {
 public:
-  TestFile(const char* testFilePath, byte* data, size_t numberOfBytes);
+  TestFile(const char* testFilePath, const char* data);
+  TestFile(const char* testFilePath, const byte* data, size_t numberOfBytes);
   ~TestFile();
 
 private:
