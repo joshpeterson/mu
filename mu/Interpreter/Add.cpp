@@ -3,6 +3,7 @@
 #include <limits>
 using std::numeric_limits;
 
+#include "Bytecode.hpp"
 #include "Interpreter/Add.hpp"
 #include "Interpreter/BinaryArithmeticOperation.hpp"
 #include "ValueStack.hpp"
@@ -10,6 +11,8 @@ using std::numeric_limits;
 void Add() {
   PerformBinaryOperation([](auto left, auto right) { return left + right; });
 }
+
+InstructionMetadata GetAddMetadata() { return {.execute = Add, .name = "Add"}; }
 
 TEST_CASE("Verify add opcode behavior") {
   SUBCASE("Verify add opcode behavior a 32-bit integer and a 32-bit integer") {

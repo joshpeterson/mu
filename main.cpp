@@ -4,6 +4,7 @@
 #include <fmt/core.h>
 using fmt::print;
 
+#include "mu/Bytecode.hpp"
 #include "mu/InstructionProcessor.hpp"
 #include "mu/Loader.hpp"
 #include "mu/Mutext/Parser.hpp"
@@ -21,6 +22,7 @@ bool AreEqual(const char* left, const char* right);
 bool IsMutextFile(const char* filePath);
 
 int main(int argc, char** argv) {
+  InitializeInstructions();
   if (argc != 2 || AreEqual(argv[1], "--help")) {
     return PrintHelp();
   } else if (AreEqual(argv[1], "--test")) {

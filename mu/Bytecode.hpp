@@ -2,6 +2,9 @@
 
 #include <cstdint>
 
+#include <string>
+using std::string;
+
 #include <fmt/format.h>
 
 #include "Argument.hpp"
@@ -32,31 +35,37 @@ struct Instruction {
   Argument argument;
 };
 
-inline bool operator==(Instruction left, Instruction right) {
-  return left.opCode == right.opCode && left.argument == right.argument;
-}
+typedef void (*ExecuteInstructionFunc)();
+
+struct InstructionMetadata {
+  ExecuteInstructionFunc execute;
+  string name;
+};
+
+void InitializeInstructions();
+
+void RegisterInstruction(OpCode opCode, InstructionMetadata metadata);
+bool HasInstruction(OpCode opCode);
+OpCode GetOpCode(string name);
+void ExecuteInstruction(OpCode opCode);
+string GetInstructionName(OpCode opCode);
+
+bool operator==(Instruction left, Instruction right);
 
 template <> struct fmt::formatter<OpCode> : formatter<string_view> {
   // parse is inherited from formatter<string_view>.
-  template <typename FormatContext> auto format(OpCode c, FormatContext& ctx) {
+  template <typename FormatContext>
+  auto format(OpCode opCode, FormatContext& ctx) {
     string_view name = "unknown";
-    switch (c) {
-    case OpCode::Nop:
+    if (opCode == OpCode::Nop)
       name = "Nop";
-      break;
-    case OpCode::Push:
+    else if (opCode == OpCode::Push)
       name = "Push";
-      break;
-    case OpCode::Pop:
+    else if (opCode == OpCode::Pop)
       name = "Pop";
-      break;
-    case OpCode::Add:
-      name = "Add";
-      break;
-    case OpCode::Subtract:
-      name = "Subtract";
-      break;
-    }
+    else if (HasInstruction(opCode))
+      name = GetInstructionName(opCode);
+
     return formatter<string_view>::format(name, ctx);
   }
 };
