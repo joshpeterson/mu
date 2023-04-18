@@ -153,6 +153,7 @@ static Instruction ParseLine(string line) {
   else
     return Instruction{OpCode::Nop};
 }
+
 TEST_CASE("Verify ParseLine behavior") {
   SUBCASE("Can parse a line to a pop instruction") {
     auto instruction = ParseLine("pop");
