@@ -1,4 +1,4 @@
-#include "config.hpp"
+#include "Config.hpp"
 
 #include <algorithm>
 using std::all_of;

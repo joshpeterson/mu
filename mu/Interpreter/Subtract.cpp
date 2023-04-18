@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include "Config.hpp"
 
 #include <limits>
 using std::numeric_limits;

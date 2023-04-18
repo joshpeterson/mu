@@ -1,5 +1,4 @@
-#include "TestUtilities.hpp"
-#include <doctest.h>
+#include "Config.hpp"
 
 #include "ReadOnlyMemoryMappedFile.hpp"
 

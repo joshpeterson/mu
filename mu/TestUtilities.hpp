@@ -1,6 +1,6 @@
 #pragma once
 
-#include <doctest.h>
+#include "Config.hpp"
 
 #include <cstddef>
 using std::byte;
