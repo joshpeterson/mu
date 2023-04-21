@@ -1,4 +1,4 @@
-#include "Config.hpp"
+#include "Configuration.hpp"
 
 #include <cstdio>
 #include <cstring>
