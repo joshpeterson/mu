@@ -1,4 +1,4 @@
-#include <doctest.h>
+#include "Configuration.hpp"
 
 #include <cstdio>
 #include <cstring>
