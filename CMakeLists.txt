@@ -12,6 +12,7 @@ set(SOURCE_FILES
   mu/Mutext/Parser.cpp
   mu/Mutext/StringUtils.cpp
   mu/Argument.cpp
+  mu/Bytecode.cpp
   mu/Loader.cpp
   mu/Log.cpp
   mu/InstructionProcessor.cpp

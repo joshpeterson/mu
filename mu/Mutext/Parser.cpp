@@ -9,6 +9,7 @@ using std::from_chars;
 #include <string>
 using std::string;
 
+#include "Bytecode.hpp"
 #include "Parser.hpp"
 #include "StringUtils.hpp"
 
@@ -29,7 +30,7 @@ TEST_CASE("Verify ParseMutextFile behavior") {
   }
 
   SUBCASE("Can parse multiple instructions from a file") {
-    TestFile testFile("test.mut", "pop\npush i32:42\n");
+    TestFile testFile("test.mut", "Pop\nPush i32:42\n");
     auto instructions = ParseMutextFile("test.mut");
     CHECK(instructions.size() == 2);
     CHECK(instructions[0].opCode == OpCode::Pop);
@@ -72,19 +73,19 @@ TEST_CASE("Verify Parse behavior") {
   }
 
   SUBCASE("Can parse a single instruction") {
-    auto instructions = Parse("pop\n");
+    auto instructions = Parse("Pop\n");
     CHECK(instructions.size() == 1);
     CHECK(instructions[0].opCode == OpCode::Pop);
   }
 
   SUBCASE("Can parse a single instruction with a parameter") {
-    auto instructions = Parse("add\n");
+    auto instructions = Parse("Add\n");
     CHECK(instructions.size() == 1);
     CHECK(instructions[0].opCode == OpCode::Add);
   }
 
-  SUBCASE("Can parse a single push instruction with a parameter") {
-    auto instructions = Parse("push i32:42\n");
+  SUBCASE("Can parse a single Push instruction with a parameter") {
+    auto instructions = Parse("Push i32:42\n");
     CHECK(instructions.size() == 1);
     CHECK(instructions[0].opCode == OpCode::Push);
     CHECK(instructions[0].argument.Type() == ArgumentType::i32);
@@ -92,7 +93,7 @@ TEST_CASE("Verify Parse behavior") {
   }
 
   SUBCASE("Can parse two instructions") {
-    auto instructions = Parse("pop\npush i32:42\n");
+    auto instructions = Parse("Pop\nPush i32:42\n");
     CHECK(instructions.size() == 2);
     CHECK(instructions[0].opCode == OpCode::Pop);
     CHECK(instructions[1].opCode == OpCode::Push);
@@ -142,33 +143,29 @@ static bool IsWhiteSpace(const string& line) {
 }
 
 static Instruction ParseLine(string line) {
-  if (line == "pop")
+  if (line == "Pop")
     return Instruction{OpCode::Pop};
-  else if (line.starts_with("push"))
+  else if (line.starts_with("Push"))
     return Instruction{OpCode::Push, ParseArgument(line)};
-  else if (line == "add")
-    return Instruction{OpCode::Add};
-  else if (line == "sub")
-    return Instruction{OpCode::Subtract};
-  else
-    return Instruction{OpCode::Nop};
+
+  return Instruction{GetOpCode(line)};
 }
 
 TEST_CASE("Verify ParseLine behavior") {
-  SUBCASE("Can parse a line to a pop instruction") {
-    auto instruction = ParseLine("pop");
+  SUBCASE("Can parse a line to a Pop instruction") {
+    auto instruction = ParseLine("Pop");
     CHECK(instruction.opCode == OpCode::Pop);
   }
 
-  SUBCASE("Can parse a line to a push instruction") {
-    auto instruction = ParseLine("push i32:4");
+  SUBCASE("Can parse a line to a Push instruction") {
+    auto instruction = ParseLine("Push i32:4");
     CHECK(instruction.opCode == OpCode::Push);
     CHECK(instruction.argument.Type() == ArgumentType::i32);
     CHECK(instruction.argument.i32() == 4);
   }
 
-  SUBCASE("Can parse a line to an add instruction") {
-    auto instruction = ParseLine("add");
+  SUBCASE("Can parse a line to an Add instruction") {
+    auto instruction = ParseLine("Add");
     CHECK(instruction.opCode == OpCode::Add);
   }
 }

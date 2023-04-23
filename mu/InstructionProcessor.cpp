@@ -22,10 +22,8 @@ void Process(span<Instruction> instructions) {
       Push(ins.argument);
     else if (ins.opCode == OpCode::Pop)
       Pop();
-    else if (ins.opCode == OpCode::Add)
-      Add();
-    else if (ins.opCode == OpCode::Subtract)
-      Subtract();
+    else if (HasInstruction(ins.opCode))
+      ExecuteInstruction(ins.opCode);
     else
       throw logic_error(format("Unexpected opcode: {}", (int)ins.opCode));
   }

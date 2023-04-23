@@ -11,6 +11,10 @@ void Subtract() {
   PerformBinaryOperation([](auto left, auto right) { return left - right; });
 }
 
+InstructionMetadata GetSubtractMetadata() {
+  return {.execute = Subtract, .name = "Subtract"};
+}
+
 TEST_CASE("Verify subtract opcode behavior") {
   SUBCASE("Verify subtract opcode behavior for a 32-bit integer and a 32-bit "
           "integer") {
@@ -100,8 +104,8 @@ TEST_CASE("Verify subtract opcode behavior") {
     CHECK(Pop().f64() == expected);
   }
 
-  SUBCASE(
-      "Verify subtract opcode behavior for a 32-bit float and a 32-bit float") {
+  SUBCASE("Verify subtract opcode behavior for a 32-bit float and a 32-bit "
+          "float") {
     const float left = 42;
     const float right = 43;
     const float expected = -1;
@@ -133,8 +137,8 @@ TEST_CASE("Verify subtract opcode behavior") {
     CHECK(Pop().f32() == expected);
   }
 
-  SUBCASE(
-      "Verify subtract opcode behavior for a 32-bit float and a 64-bit float") {
+  SUBCASE("Verify subtract opcode behavior for a 32-bit float and a 64-bit "
+          "float") {
     const float left = 42;
     const double right = 43;
     const double expected = -1;
@@ -144,8 +148,8 @@ TEST_CASE("Verify subtract opcode behavior") {
     CHECK(Pop().f64() == expected);
   }
 
-  SUBCASE(
-      "Verify subtract opcode behavior for a 64-bit float and a 64-bit float") {
+  SUBCASE("Verify subtract opcode behavior for a 64-bit float and a 64-bit "
+          "float") {
     const double left = 20;
     const double right = -15;
     const double expected = 35;
@@ -177,8 +181,8 @@ TEST_CASE("Verify subtract opcode behavior") {
     CHECK(Pop().f64() == expected);
   }
 
-  SUBCASE(
-      "Verify subtract opcode behavior for a 64-bit float and a 32-bit float") {
+  SUBCASE("Verify subtract opcode behavior for a 64-bit float and a 32-bit "
+          "float") {
     const double left = 20;
     const float right = -15;
     const double expected = 35;
