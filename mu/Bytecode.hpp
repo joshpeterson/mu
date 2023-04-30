@@ -27,7 +27,8 @@ enum class OpCode {
 
   // These opcodes represent the actual instructions the VM can execute.
   Add,
-  Subtract
+  Subtract,
+  Multiply,
 };
 
 struct Instruction {

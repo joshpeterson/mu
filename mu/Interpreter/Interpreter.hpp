@@ -7,4 +7,5 @@
 // value stack properly.
 
 #include "Interpreter/Add.hpp"
+#include "Interpreter/Multiply.hpp"
 #include "Interpreter/Subtract.hpp"

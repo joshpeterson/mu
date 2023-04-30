@@ -6,6 +6,7 @@ using std::unordered_map;
 #include "Bytecode.hpp"
 
 #include "Interpreter/Add.hpp"
+#include "Interpreter/Multiply.hpp"
 #include "Interpreter/Subtract.hpp"
 
 static unordered_map<OpCode, InstructionMetadata> Instructions;
@@ -13,6 +14,7 @@ static unordered_map<OpCode, InstructionMetadata> Instructions;
 void InitializeInstructions() {
   RegisterInstruction(OpCode::Add, GetAddMetadata());
   RegisterInstruction(OpCode::Subtract, GetSubtractMetadata());
+  RegisterInstruction(OpCode::Multiply, GetMultiplyMetadata());
 }
 
 void RegisterInstruction(OpCode opCode, InstructionMetadata metadata) {

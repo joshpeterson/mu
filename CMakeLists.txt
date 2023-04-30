@@ -9,6 +9,7 @@ set(SOURCE_FILES
   main.cpp
   mu/Interpreter/Add.cpp
   mu/Interpreter/Subtract.cpp
+  mu/Interpreter/Multiply.cpp
   mu/Mutext/Parser.cpp
   mu/Mutext/StringUtils.cpp
   mu/Argument.cpp

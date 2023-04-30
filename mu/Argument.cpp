@@ -89,6 +89,7 @@ bool operator==(const Argument& left, const Argument& right) {
     return left.c() == right.c();
 
   assert(0 && "Missing case for Argument equality");
+  return false;
 }
 
 TEST_CASE("Verify argument behavior") {
