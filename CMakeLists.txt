@@ -27,6 +27,10 @@ add_subdirectory(external/doctest)
 
 add_executable(mu ${SOURCE_FILES})
 
+include(CTest)
+include(doctest.cmake)
+doctest_discover_tests(mu)
+
 target_include_directories(mu PRIVATE ${CMAKE_SOURCE_DIR}/mu) 
 
 target_link_libraries(mu PRIVATE fmt doctest)
