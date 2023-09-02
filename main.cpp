@@ -19,13 +19,16 @@ int ProcessMutextFile(const char* muFilePath);
 int ProcessBytecodeFile(const char* muFilePath);
 
 bool AreEqual(const char* left, const char* right);
+bool StartsWith(const char* haystack, const char* needle);
 bool IsMutextFile(const char* filePath);
 
 int main(int argc, char** argv) {
   InitializeInstructions();
   if (argc != 2 || AreEqual(argv[1], "--help")) {
     return PrintHelp();
-  } else if (AreEqual(argv[1], "--test")) {
+  } else if (AreEqual(argv[1], "--test") ||
+             AreEqual(argv[1], "--list-test-cases") ||
+             StartsWith(argv[1], "--test-case")) {
     return RunTests(argc, argv);
   } else if (IsMutextFile(argv[1])) {
     return ProcessMutextFile(argv[1]);
@@ -90,6 +93,10 @@ int ProcessBytecodeFile(const char* muFilePath) {
 
 bool AreEqual(const char* left, const char* right) {
   return strcmp(left, right) == 0;
+}
+
+bool StartsWith(const char* haystack, const char* needle) {
+  return strncmp(needle, haystack, strlen(needle)) == 0;
 }
 
 bool IsMutextFile(const char* filePath) {
