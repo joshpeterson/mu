@@ -204,3 +204,25 @@ TEST_CASE("Verify add opcode behavior") {
     CHECK(Pop().i64() == numeric_limits<int64_t>::min());
   }
 }
+
+TEST_CASE("Verify add opcode performance") {
+  ankerl::nanobench::Bench b;
+  b.title(GetCurrentTestName()).relative(true);
+
+  b.run("Baseline for add opcode", [] {
+    auto x = 42 + 43;
+    ankerl::nanobench::doNotOptimizeAway(x);
+  });
+
+  b.run("Add two integers", [] {
+    Push(43);
+    Push(42);
+    Add();
+  });
+
+  b.run("Add two floats", [] {
+    Push(43.4);
+    Push(42.7);
+    Add();
+  });
+}

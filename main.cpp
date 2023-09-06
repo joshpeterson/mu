@@ -1,6 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "external/doctest/doctest.h"
 
+#define ANKERL_NANOBENCH_IMPLEMENT
+#include <nanobench.h>
+
 #include <fmt/core.h>
 using fmt::print;
 
@@ -101,4 +104,13 @@ bool StartsWith(const char* haystack, const char* needle) {
 
 bool IsMutextFile(const char* filePath) {
   return string(filePath).ends_with(".mut");
+}
+
+// This exposes the current test name inside a TEST_CASE.
+// It is really helpful for benchmarking, as we can name the test case and
+// benchmark the same string, and only write it once. See
+// https://github.com/doctest/doctest/issues/345 for this suggestion.
+// It must be in this file because DOCTEST_CONFIG_IMPLEMENT is here.
+const char* GetCurrentTestName() {
+  return doctest::detail::g_cs->currentTest->m_name;
 }
