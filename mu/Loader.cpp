@@ -5,16 +5,16 @@ using fmt::format;
 
 #include "Loader.hpp"
 
-// == Loader ==
-//
-// Instructions can be loaded from a binary file. This class opens that file
-// and provides a list of instructions to be executed. It closes the file
-// when the instance of the Loadrer does out of scope.
-
+///
+/// @brief Create a Loader object for a given mu binary file.
+///
+/// @param [in] muFilePath The path to the mu binary file.
+///
 Loader::Loader(const char* muFilePath)
     : m_muFilePath(muFilePath), m_muFile(muFilePath),
       m_errorCondition(ErrorCondition::NoError) {
   auto fileData = m_muFile.GetBuffer();
+
   if (fileData == nullptr) {
     m_errorCondition = ErrorCondition::FileDoesNotExist;
   } else if (*(uint32_t*)fileData != MuMagicHeader) {
@@ -26,8 +26,20 @@ Loader::Loader(const char* muFilePath)
   }
 }
 
+///
+/// @brief Get the instructions from the mu binary file.
+///
+/// @return span<Instruction> The instructions from the mu binary file.
+///
 span<Instruction> Loader::GetInstructions() const { return m_instructions; }
 
+///
+/// @brief Get an error mesage if there was a problem loading the mu binary
+/// file.
+///
+/// @return string An error message if there was a problem loading the mu
+/// binary, otherwise an empty string.
+///
 string Loader::GetErrorMessage() const {
   if (m_errorCondition == ErrorCondition::FileDoesNotExist)
     return format("The file '{}' does not exist.", m_muFilePath);
