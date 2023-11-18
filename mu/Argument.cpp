@@ -9,28 +9,6 @@ using fmt::format;
 
 #include "Argument.hpp"
 
-Argument::Argument() : m_Type(ArgumentType::None) {}
-
-Argument::Argument(int32_t value) : m_Type(ArgumentType::i32) {
-  m_Data.i32 = value;
-}
-
-Argument::Argument(int64_t value) : m_Type(ArgumentType::i64) {
-  m_Data.i64 = value;
-}
-
-Argument::Argument(float value) : m_Type(ArgumentType::f32) {
-  m_Data.f32 = value;
-}
-
-Argument::Argument(double value) : m_Type(ArgumentType::f64) {
-  m_Data.f64 = value;
-}
-
-Argument::Argument(bool value) : m_Type(ArgumentType::b) { m_Data.b = value; }
-
-Argument::Argument(char value) : m_Type(ArgumentType::c) { m_Data.c = value; }
-
 ArgumentType Argument::Type() const { return m_Type; }
 
 int32_t Argument::i32() const {

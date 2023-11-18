@@ -18,13 +18,27 @@ union ArgumentData {
 };
 
 struct Argument {
-  Argument();
-  Argument(int32_t value);
-  Argument(int64_t value);
-  Argument(float value);
-  Argument(double value);
-  Argument(bool value);
-  Argument(char value);
+  constexpr Argument() : m_Type(ArgumentType::None) {}
+
+  constexpr Argument(int32_t value) : m_Type(ArgumentType::i32) {
+    m_Data.i32 = value;
+  }
+
+  constexpr Argument(int64_t value) : m_Type(ArgumentType::i64) {
+    m_Data.i64 = value;
+  }
+
+  constexpr Argument(float value) : m_Type(ArgumentType::f32) {
+    m_Data.f32 = value;
+  }
+
+  constexpr Argument(double value) : m_Type(ArgumentType::f64) {
+    m_Data.f64 = value;
+  }
+
+  constexpr Argument(bool value) : m_Type(ArgumentType::b) { m_Data.b = value; }
+
+  constexpr Argument(char value) : m_Type(ArgumentType::c) { m_Data.c = value; }
 
   ArgumentType Type() const;
 

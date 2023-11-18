@@ -38,5 +38,5 @@ target_include_directories(mu PRIVATE ${CMAKE_SOURCE_DIR}/mu)
 
 target_link_libraries(mu PRIVATE fmt doctest nanobench)
 
-target_compile_options(mu PRIVATE $<$<CONFIG:Debug>: -fsanitize=address>)
-target_link_options(mu PRIVATE $<$<CONFIG:Debug>: -fsanitize=address>)
+target_compile_options(mu PRIVATE -fsanitize=address)
+target_link_options(mu PRIVATE -fsanitize=address)
