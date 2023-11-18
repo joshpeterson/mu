@@ -15,22 +15,23 @@ using std::stack;
 // It is an implementation detail that we don't want to leak to any other code.
 // Other code should only use the "Value Stack" based its public API (i.e. its
 // methods).
-static stack<Argument> valueStack;
 
-void Push(Argument value) { valueStack.push(value); }
-
-Argument Pop() {
-  auto value = valueStack.top();
-  valueStack.pop();
-  return value;
-}
-
-int StackSize() { return valueStack.size(); }
+Stack valueStack;
 
 TEST_CASE("Verify value stack behavior") {
-  Push(42);
-  CHECK(Pop().i32() == 42);
+  SUBCASE("Can push and pop") {
+    Push(42);
+    CHECK(Pop().i32() == 42);
 
-  Push(43);
-  CHECK(Pop().i32() == 43);
+    Push(43);
+    CHECK(Pop().i32() == 43);
+  }
+
+  SUBCASE("Can allocate more than 20 values") {
+    int i = 0;
+    for (; i < 100; i++) {
+      Push(i);
+    }
+    CHECK(Pop().i32() == i - 1);
+  }
 }
