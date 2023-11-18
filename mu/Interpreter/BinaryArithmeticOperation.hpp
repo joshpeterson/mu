@@ -4,6 +4,19 @@
 
 #include "ValueStack.hpp"
 
+///
+/// @brief Perform a binary arithmetic operation.
+/// This function handles the common logic for performing a binary
+/// arithmetic operation. It pops two values from the value stack, performs the
+/// operation, and pushes the result back onto the value stack. It ensure that
+/// argument types are access properly from the Arguments on the stack.
+/// Call it with a generic lambda that takes two arguments and returns a value.
+///
+/// @tparam OperationCallback The type of the operation callback. This is not
+/// used, allow the compiler to determine it from the generic lambda passed to
+/// this function.
+/// @param[in] op The binary options to perform.
+///
 template <typename OperationCallback>
 void PerformBinaryOperation(OperationCallback&& op) {
   assert(StackSize() >= 2);
