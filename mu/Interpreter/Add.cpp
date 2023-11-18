@@ -218,11 +218,13 @@ TEST_CASE("Verify add opcode performance") {
     Push(43);
     Push(42);
     Add();
+    Pop();
   });
 
   b.run("Add two floats", [] {
     Push(43.4);
     Push(42.7);
     Add();
+    Pop();
   });
 }
