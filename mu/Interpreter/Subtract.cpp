@@ -7,10 +7,20 @@ using std::numeric_limits;
 #include "Interpreter/Subtract.hpp"
 #include "ValueStack.hpp"
 
+///
+/// @brief The subtract opcode implementation.
+/// The subtract opcode pops two values from the value stack, subtracts
+/// them, and pushes the result back onto the value stack.
+///
 void Subtract() {
   PerformBinaryOperation([](auto left, auto right) { return left - right; });
 }
 
+///
+/// @brief Get the subtract opcode metadata.
+///
+/// @return InstructionMetadata The subtract opcode metadata.
+///
 InstructionMetadata GetSubtractMetadata() {
   return {.execute = Subtract, .name = "Subtract"};
 }

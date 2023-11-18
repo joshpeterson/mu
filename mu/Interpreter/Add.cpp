@@ -8,10 +8,20 @@ using std::numeric_limits;
 #include "Interpreter/BinaryArithmeticOperation.hpp"
 #include "ValueStack.hpp"
 
+///
+/// @brief The add opcode implementation.
+/// The add opcode pops two values from the value stack, adds them,
+/// and pushes the result back onto the value stack.
+///
 void Add() {
   PerformBinaryOperation([](auto left, auto right) { return left + right; });
 }
 
+///
+/// @brief Get the add opcode metadata.
+///
+/// @return InstructionMetadata The add opcode metadata.
+///
 InstructionMetadata GetAddMetadata() { return {.execute = Add, .name = "Add"}; }
 
 TEST_CASE("Verify add opcode behavior") {
