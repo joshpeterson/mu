@@ -210,3 +210,27 @@ TEST_CASE("Verify subtract opcode behavior") {
     CHECK(Pop().i64() == numeric_limits<int64_t>::max());
   }
 }
+
+TEST_CASE("Verify sub opcode performance") {
+  ankerl::nanobench::Bench b;
+  b.title(GetCurrentTestName()).relative(true);
+
+  b.run("Baseline for sub opcode", [] {
+    auto x = 42 - 43;
+    ankerl::nanobench::doNotOptimizeAway(x);
+  });
+
+  b.run("Subtract two integers", [] {
+    Push(43);
+    Push(42);
+    Subtract();
+    Pop();
+  });
+
+  b.run("Stubtract two floats", [] {
+    Push(43.4);
+    Push(42.7);
+    Subtract();
+    Pop();
+  });
+}
