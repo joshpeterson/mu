@@ -1,3 +1,5 @@
+#include "Configuration.hpp"
+
 #include "Log.hpp"
 
 using fmt::print;
