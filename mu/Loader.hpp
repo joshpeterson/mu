@@ -15,7 +15,7 @@ public:
   span<Instruction> GetInstructions() const;
   string GetErrorMessage() const;
 
-  static const uint32_t MuMagicHeader = 0xDAFF;
+  static const uint64_t MuMagicHeader = 0xDAFFDAFF;
 
 private:
   const char* m_muFilePath;
