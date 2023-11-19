@@ -13,6 +13,11 @@ using std::string;
 #include "Parser.hpp"
 #include "StringUtils.hpp"
 
+///
+/// @brief Convert a text file with mu instructions into a list of Instructions.
+///
+/// @param[in] mutextFilePath The path to the mu text fike to parse.
+///
 vector<Instruction> ParseMutextFile(const char* mutextFilePath) {
   return Parse(GetFileContents(mutextFilePath).c_str());
 }
@@ -40,6 +45,12 @@ TEST_CASE("Verify ParseMutextFile behavior") {
   }
 }
 
+///
+/// @brief Read the contents of a file into a string.
+///
+/// @param[in] filename The path to the file.
+/// @return string The contents of the file.
+///
 static string GetFileContents(const char* filename) {
   FILE* file = fopen(filename, "rb");
   if (file == nullptr)
@@ -57,6 +68,11 @@ static string GetFileContents(const char* filename) {
   return contents;
 }
 
+///
+/// @brief Process a mu text file, parsing it into Instructions.
+///
+/// @param[in] mutextFileData The path to the text file to parse.
+///
 static vector<Instruction> Parse(const char* mutextFileData) {
   auto lines = SplitStringIntoLines(mutextFileData);
   vector<Instruction> instructions;
@@ -102,6 +118,12 @@ TEST_CASE("Verify Parse behavior") {
   }
 }
 
+///
+/// @brief Split a single string into multiple strings on line breaks.
+///
+/// @param[in] input the string to split.
+/// @return vector<string> One string per line of the input.
+///
 vector<string> SplitStringIntoLines(const string& input) {
   vector<string> lines;
   string::size_type pos = 0;
@@ -138,10 +160,22 @@ TEST_CASE("Verify SplitStringIntoLines behavior") {
   }
 }
 
+///
+/// @brief Determine if a given string is all whitespace.
+///
+/// @param[in] line The string to check.
+/// @return bool True if the string is whitespace, false otherwise.
+///
 static bool IsWhiteSpace(const string& line) {
   return all_of(line.begin(), line.end(), isspace);
 }
 
+///
+/// @brief Convert a single line of mu text code into an Instruction.
+///
+/// @param[in] line The line of mu text code to parse.
+/// @return Instruction The parsed instruction.
+///
 static Instruction ParseLine(string line) {
   if (line == "Pop")
     return Instruction{OpCode::Pop};
@@ -170,6 +204,12 @@ TEST_CASE("Verify ParseLine behavior") {
   }
 }
 
+///
+/// @brief Assuming the string is a Boolean value, convert it to a bool.
+///
+/// @param[in] value The string to parse
+/// @return bool True if the input is "true", false otherwise.
+///
 static bool ParseBoolFromString(string value) {
   if (value == "true")
     return true;
@@ -178,6 +218,12 @@ static bool ParseBoolFromString(string value) {
   return false;
 }
 
+///
+/// @brief Parse a line of mu text code into an Argument.
+///
+/// @param[in] line The line of mu text code to parse.
+/// @return Argument The parsed argument.
+///
 static Argument ParseArgument(string line) {
   auto argumentString = Trim(line.substr(line.find(" ")));
 
@@ -236,6 +282,12 @@ TEST_CASE("Verify ParseArgument behavior") {
   }
 }
 
+///
+/// @brief Convert a string representing an ArgumentType to an ArgumentType.
+///
+/// @param[in] typeString The string to parse.
+/// @return ArgumentType The parsed ArgumentType.
+///
 static ArgumentType FromString(string typeString) {
   if (typeString == "i32")
     return ArgumentType::i32;
@@ -252,6 +304,13 @@ static ArgumentType FromString(string typeString) {
   return ArgumentType::None;
 }
 
+///
+/// @brief Covert a value into an Argument of a given type.
+///
+/// @param[in] argumentType The type of Argument to create.
+/// @param[in] value The value to convert.
+/// @return Argument The converted value.
+///
 static Argument OfType(ArgumentType argumentType, auto value) {
   if (argumentType == ArgumentType::i32)
     return Argument((int32_t)value);
