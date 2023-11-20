@@ -30,6 +30,9 @@ enum class OpCode {
   Subtract
 };
 
+///
+/// struct Instruction - [TODO:description]
+///
 struct Instruction {
   OpCode opCode;
   Argument argument;

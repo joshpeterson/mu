@@ -9,38 +9,92 @@ using fmt::format;
 
 #include "Argument.hpp"
 
+///
+/// @brief Get the type of the Argument.
+///
+/// @return ArgumentType The type of the Argument.
+///
 ArgumentType Argument::Type() const { return m_Type; }
 
+///
+/// @brief Get the value of the Argument as a 32-bit integer.
+/// This function should only be called if the ArgumentType is i32.
+/// If the ArgumentType is not i32, this function will assert.
+///
+/// @return int32_t The value of the Argument as a 32-bit integer.
+///
 int32_t Argument::i32() const {
   assert(m_Type == ArgumentType::i32);
   return m_Data.i32;
 }
 
+///
+/// @brief Get the value of the Argument as a 64-bit integer.
+/// This function should only be called if the ArgumentType is i64.
+/// If the ArgumentType is not i64, this function will assert.
+///
+/// @return int64_t The value of the Argument as a 64-bit integer.
+///
 int64_t Argument::i64() const {
   assert(m_Type == ArgumentType::i64);
   return m_Data.i64;
 }
 
+///
+/// @brief Get the value of the Argument as a 32-bit float.
+/// This function should only be called if the ArgumentType is i32.
+/// If the ArgumentType is not i32, this function will assert.
+///
+/// @return int32_t The value of the Argument as a 32-bit float.
+///
 float Argument::f32() const {
   assert(m_Type == ArgumentType::f32);
   return m_Data.f32;
 }
 
+///
+/// @brief Get the value of the Argument as a 64-bit float.
+/// This function should only be called if the ArgumentType is i64.
+/// If the ArgumentType is not i64, this function will assert.
+///
+/// @return int64_t The value of the Argument as a 64-bit float.
+///
 double Argument::f64() const {
   assert(m_Type == ArgumentType::f64);
   return m_Data.f64;
 }
 
+///
+/// @brief Get the value of the Argument as a Boolean.
+/// This function should only be called if the ArgumentType is b.
+/// If the ArgumentType is not b, this function will assert.
+///
+/// @return bool The value of the Argument as a Boolean.
+///
 bool Argument::b() const {
   assert(m_Type == ArgumentType::b);
   return m_Data.b;
 }
 
+///
+/// @brief Get the value of the Argument as an 8-bit character.
+/// This function should only be called if the ArgumentType is c.
+/// If the ArgumentType is not c, this function will assert.
+///
+/// @return char The value of the Argument as an 8-bit character.
+///
 char Argument::c() const {
   assert(m_Type == ArgumentType::c);
   return m_Data.c;
 }
 
+///
+/// @brief Compare two Arguments for equality.
+///
+/// @param[in] left The left Argument to compare.
+/// @param[in] right The right Argument to compare.
+/// @return bool True if the Arguments are equal, false otherwise.
+///
 bool operator==(const Argument& left, const Argument& right) {
   if (left.Type() != right.Type())
     return false;
