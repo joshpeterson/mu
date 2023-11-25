@@ -10,12 +10,12 @@ using fmt::format;
 
 #include "Loader.hpp"
 
-// == TestFile ==
-//
-// The TestFile class is used to create a file with a given name and contents
-// for use in unit tests. The file is deleted when the TestFile object goes out
-// of scope.
-//
+///
+/// @brief Create a new instance of a TestFile object.
+///
+/// @param[in] testFilePath The absolute path to the file to be created.
+/// @param[in] data The data to write to the file.
+///
 TestFile::TestFile(const char* testFilePath, const char* data)
     : TestFile(testFilePath, reinterpret_cast<const byte*>(data),
                strlen(data)) {}
@@ -28,14 +28,18 @@ TestFile::TestFile(const char* testFilePath, const byte* data,
   fclose(testFileHandle);
 }
 
+///
+/// @brief Delete the file that was created in the constructor.
+///
+///
 TestFile::~TestFile() { std::remove(m_testFilePath); }
 
-// == TestMuFile ==
-//
-// The TestMuFile class is used to create a file with a given name set of mu
-// instructions for use in unit tests. The file is deleted when the TestMuFile
-// object goes out of scope.
-//
+///
+/// @brief Create a new instance of a TestMuFile object.
+///
+/// @param[in] testFilePath The absolute path to the file to be created.
+/// @param[in] instructions The instructions to write to the file.
+///
 TestMuFile::TestMuFile(const char* testFilePath, span<Instruction> instructions)
     : m_testFile(testFilePath, (byte*)GetMuFileData(instructions),
                  GetMuFileSize(instructions)) {}
@@ -51,12 +55,22 @@ byte* TestMuFile::GetMuFileData(span<Instruction> instructions) {
   return m_MuFileBuffer;
 }
 
+///
+/// @brief Determine the size of the mu binary file with the given instructions.
+///
+/// @param[in] instructions The instructions to write to the file.
+/// @return The number of bytes the my binary files will require.
+///
 size_t TestMuFile::GetMuFileSize(span<Instruction> instructions) {
   return sizeof(Loader::MuMagicHeader) + instructions.size_bytes();
 }
 
-// This helper function is used to verify that the expected instructions are the
-// same as the actual instructions.
+///
+/// @brief Verify that the expected instructions are the same as the actual.
+///
+/// @param[in] expected The expected instructions.
+/// @param[in] actual The actual instructions.
+///
 void VerifyInstructions(span<Instruction> expected, span<Instruction> actual) {
   REQUIRE(expected.size() == actual.size());
 
@@ -67,6 +81,14 @@ void VerifyInstructions(span<Instruction> expected, span<Instruction> actual) {
 
 // This helper function is used to display a given instuction as a string in the
 // test output.
+
+///
+/// @brief A helper function to display a given instruction as a string for the
+/// doctest library.
+///
+/// @param[in] instruction The instruction to convert to a string.
+/// @return The string representation of the instruction.
+///
 doctest::String toString(const Instruction& instruction) {
   return format("OpCode: {} Argument: {}", instruction.opCode,
                 instruction.argument)

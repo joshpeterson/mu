@@ -9,6 +9,10 @@ using std::span;
 
 #include "Bytecode.hpp"
 
+///
+/// @brief Write a file at a given path, with the given data, then delete it
+/// when the instance of this type goes out of scope.
+///
 class TestFile {
 public:
   TestFile(const char* testFilePath, const char* data);
@@ -19,6 +23,10 @@ private:
   const char* m_testFilePath;
 };
 
+///
+/// @brief Write a mu binary file at a given path, with the given instructions,
+/// and delete it when the instance of this type goes out of scope.
+///
 class TestMuFile {
 public:
   TestMuFile(const char* testFilePath, span<Instruction> instructions);
