@@ -3,6 +3,10 @@
 #include <cstddef>
 using std::byte;
 
+///
+/// @brief Open a read-only memory mapped file, and close it when an instance of
+/// this type goes out of scope.
+///
 class ReadOnlyMemoryMappedFile {
 public:
   ReadOnlyMemoryMappedFile(const char* filePath);

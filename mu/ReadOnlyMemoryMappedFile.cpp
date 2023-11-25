@@ -7,6 +7,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+///
+/// @brief Memory map a file for read-only access.
+///
+/// @param[in] filePath The absolute path to the file to memory map.
+///
 ReadOnlyMemoryMappedFile::ReadOnlyMemoryMappedFile(const char* filePath)
     : m_fileSize(0), m_fileHandle(-1), m_fileBuffer(nullptr) {
   struct stat st;
@@ -20,6 +25,10 @@ ReadOnlyMemoryMappedFile::ReadOnlyMemoryMappedFile(const char* filePath)
   }
 }
 
+///
+/// @brief Unmap the memory mapped file and close the file handle.
+///
+///
 ReadOnlyMemoryMappedFile::~ReadOnlyMemoryMappedFile() {
   if (m_fileBuffer != nullptr)
     munmap(m_fileBuffer, m_fileSize);
@@ -27,8 +36,18 @@ ReadOnlyMemoryMappedFile::~ReadOnlyMemoryMappedFile() {
     close(m_fileHandle);
 }
 
+///
+/// @brief The the contents of the memory mapped file.
+///
+/// @return A pointer to the memory mapped file contents.
+///
 byte* ReadOnlyMemoryMappedFile::GetBuffer() { return m_fileBuffer; }
 
+///
+/// @brief Get the size of the memory mapped file.
+///
+/// @return The number of bytes in the memory mapped file.
+///
 size_t ReadOnlyMemoryMappedFile::GetSize() { return m_fileSize; }
 
 TEST_CASE("Verify read-only memory mapped file behavior") {
