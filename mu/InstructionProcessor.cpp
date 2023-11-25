@@ -11,11 +11,16 @@ using fmt::format;
 #include "Interpreter/Interpreter.hpp"
 #include "ValueStack.hpp"
 
-// == Instruction Processor ==
-//
-// The instruction processor identifies each instruction and calls the proper
-// implemenatation for that instruction.
+/// == Instruction Processor ==
+///
+/// The instruction processor identifies each instruction and calls the proper
+/// implemenatation for that instruction.
 
+///
+/// @brief Execute each instruction in the list, in the order they are given.
+///
+/// @param[in] instructions The list of instructions to execute.
+///
 void Process(span<Instruction> instructions) {
   for (auto& ins : instructions) {
     if (ins.opCode == OpCode::Push)
